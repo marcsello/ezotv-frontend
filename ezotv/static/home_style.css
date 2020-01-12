@@ -1,0 +1,219 @@
+/* the cards */	
+li.card, li.double_card  {
+        display: inline-block;
+        overflow: hidden;
+        margin: 10px;
+        padding: 10px;
+        float: left;
+        position: relative;
+        
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.80);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.80);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.80);
+        
+}
+        
+li.card {
+        width: 360px;
+        height: 200px;
+}
+        
+li.double_card {
+        width: 760px;
+        min-width: 360px;
+        height: auto;
+}
+        
+li.clickable {
+        cursor: pointer;
+        
+        transition:.2s;
+        -o-transition:.2s;
+        -ms-transition:.2s;
+        -moz-transition:.2s;
+        -webkit-transition:.2s;
+}
+        
+li:hover.clickable {
+/*	box-shadow: inset 0 0 25px #000;*/
+        box-shadow: none;
+}
+        
+.blury_shadow {
+
+        text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.9);
+        
+}
+        
+div.card_footer {
+        display: block;
+        position: absolute;
+        bottom: 10px;
+        width: 360px;
+}
+
+ul.cards_container {
+        max-width: 810px;
+        min-width: 360px;
+        height: auto;
+        display: block;
+        margin: auto;
+}
+        
+p.card_title, p.card_title_single {
+        font-size: 1.7em;	
+        font-weight: bold;	
+}
+        
+p.card_title_single {
+        margin-top: 55px;
+}
+        
+p.card_title {
+        margin-top: 10px;
+}
+        
+p.card_subtitle {
+        margin-top: 15px;	
+}
+        
+/* cards themselves */
+
+#card_register {
+        background: url('plank3.jpg');	
+}
+        
+#card_discord {
+    background-color: #7289DA;
+    color: #fff;
+}
+        
+#card_backups {
+        background: url('card_backups.png');
+}
+        
+#card_map {
+        background: url('card_map.png');
+        color: #fff;
+        text-shadow: 2px 2px 2px #000;
+}
+        
+#card_dirt {
+        background: url('card_dirt.png');	
+        color: #fff;
+        text-shadow: 0px 0px 20px #000;
+}
+        
+#card_players {
+        background: url('stone2.jpg');		
+        
+}
+        
+#card_footer {
+        background-color: #f5deb3;
+}
+        
+/* other content of cards */
+        
+li.srv_status_online {
+        background-color: #6af76a;	
+}
+        
+li.srv_status_offline {
+        background-color: #f76a6a;	
+}
+        
+#server_status {
+        margin: 0.5em 0;
+        font-size: 3em;
+        font-weight: bold;
+        font-family: Impact,Charcoal,sans-serif;
+}
+        
+#version_string {
+        font-style: italic;
+}
+        
+p {
+        margin: 10px;	
+}
+
+
+#players_table {
+        width: 75%;
+        margin: 10px auto;
+        border-spacing: 2px 3px;
+}
+        
+td {
+        background-color: rgba(255, 255, 255, 0.35);
+        padding: 3px 10px;
+}
+        
+td.player_name {
+        width: 45%;
+        text-align: left;
+        font-weight: bold;
+}
+        
+td.player_status {
+        width: 15%;
+        font-weight: bold;
+}
+        
+td.player_info {
+        width: 40%;
+        text-align: right;
+}
+        
+td.ply_online_status {
+        
+        color: #009200;
+        
+}
+        
+td.ply_offline_status { 
+
+        color: #ce0000;
+        
+}
+        
+/* other stuff */
+        
+body {
+        text-align: center;
+        font-family: Arial,Helvetica,sans-serif;
+        background-image: url('background.jpg');
+        background-position-x: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+}
+        
+h1 {
+        padding: 0.5em 0;
+        font-size: 4em;	
+}
+        
+h2 {
+        font-size: 1.7em;
+}
+        
+a {
+        color: #333;
+        transition: .2s;
+}
+        
+a:hover {
+        color: #666;	
+}
+        
+a:active {
+        color: red;
+        transition: 0;
+}
+        
+div.bottom_spacing {
+        height: 75px;	
+}
+

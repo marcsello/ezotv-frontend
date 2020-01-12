@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta name="robots" content="noindex, nofollow, noarchive">
+        <title>EZO.TV Minecraft szerver</title>
+        
+        <link rel="stylesheet" type="text/css" href="/static/home_style.css">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/countdown/2.6.0/countdown.min.js"></script>
+        
+</head><body>
+
+<h1>EZO.TV Minecraft szerver</h1>
+
+<ul class="cards_container">
+        
+<li class="card {% if data.server.online %} srv_status_online {% else %} srv_status_online {% endif %}" id="card_server_status">
+        <p>A Minecraft szerver</p><p id="server_status">{% if data.server.online %} ONLINE {% else %} OFFLINE {% endif %}</p><p>Cím: celestia.marcsello.com</p>
+        <div class="card_footer">Online játékosok: {{data.server.players}}</div>
+</li>
+        
+<li class="card clickable" onclick="window.location='/register'" id="card_register">
+        <p class="card_title_single">Regisztrálj a játékhoz</p>
+        <p class="card_subtitle">Nálunk csak regisztrált játékosok tudnak játszani!</p>
+</li>
+
+<li class="card clickable" onclick="window.location='https://discord.gg/CTtAxYt';" id="card_discord">
+        <p class="card_title_single">Csatlakozz hozzánk<br>Discordon!</p>
+        <p class="card_subtitle">Különösen, ha játszani szeretnél!</p>
+</li>
+
+<li class="card clickable" onclick="window.location='https://luna.marcsello.com/ezotv/map';" id="card_map">
+        <p class="card_title_single">Szerver térkép</p>
+       {% if data.map.rendering %} <p class="card_subtitle">Rendering...</p> {% endif %}
+        <div class="card_footer">Köszönet: Krisuse</div>
+</li>
+
+<li class="card clickable blury_shadow" onclick="window.location='/backups';" id="card_backups">
+        <p class="card_title_single">Biztonsági mentések:</p>
+        <p>Legfrissebb változat:</p>
+        <p id="version_string">{{ data.backup.latest }}</p>
+        <div class="card_footer">Köszönet: FluxusMűvek</div>
+</li>
+
+<li class="card clickable" id="card_dirt" onclick="window.location='https://luna.marcsello.com/ezotv/ezotv_res.zip';">
+        <p class="card_title_single">Resource pack</p>
+        <p>Töltsd le saját, házi érlelésű resource packunk!</p>
+        <div class="card_footer">Köszönet: WhiteEnder</div>
+</li>
+
+<li class="double_card" id="card_players">
+        <p class="card_title blury_shadow">Játékosok:</p>
+        
+        <table id="players_table">
+        
+        {% for player in data.players %}
+        <tr>
+                <td class="player_name">{{player.name}}</td>
+                <td class="player_status  {% if player.online %} ply_online_status {% else %} ply_offline_status {% endif %}">{% if player.online %} Online {% else %} Offline {% endif %}</td>
+                <td class="player_info" data-last-seen="{{player.last_seen}}"></td>
+        </tr>
+        {% endfor %}
+        
+        </table>
+        
+        <p class="blury_shadow">Eddig csatlakozott játékosok: {{ data.players|length() }}</p>
+</li>
+        
+<li class="double_card" id="card_footer">
+        <p>Az <b>EZO.TV Minecraft Szerver</b> nem összekeverendő az <b>ezo.tv</b> ezoterikus izéval</p>
+        <p>2015-2020 EZO.TV Minecraft Szerver<br>
+        Powered by <a href="https://debian.org">Debian</a>, <a href="https://www.spigotmc.org">Spigot</a> and Magical Pony Power!</p>
+</li>
+
+</ul>
+
+<br clear="both"><div class="bottom_spacing"></div>
+
+<script src="/static/timer_magic.js"></script>
+</body>
+</html>
