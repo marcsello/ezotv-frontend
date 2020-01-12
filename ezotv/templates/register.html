@@ -15,41 +15,41 @@
       <div class="form-group row">
         <label class="col-3 col-form-label" for="name">Név</label>
         <div class="col-9">
-          <input id="name" name="name" placeholder="Béla" type="text" aria-describedby="nameHelpBlock" required="required" class="form-control">
+          <input id="name" name="name" placeholder="Béla" type="text" aria-describedby="nameHelpBlock" required="required" class="form-control" value="{{ prefill.name }}">
           <span id="nameHelpBlock" class="form-text text-muted">Nicknév amely alapján megismerünk</span>
         </div>
       </div>
       <div class="form-group row">
         <label for="minecraft_name" class="col-3 col-form-label">Minecraft játékosnév</label>
         <div class="col-9">
-          <input id="minecraft_name" name="minecraft_name" placeholder="xXx_1337MinerSWAGCrafter420Pu$$yH4xX0r69xD_xXx" type="text" aria-describedby="minecraft_nameHelpBlock" required="required" class="form-control">
+          <input id="minecraft_name" name="minecraft_name" placeholder="xXx_1337MinerSWAGCrafter420Pu$$yH4xX0r69xD_xXx" type="text" aria-describedby="minecraft_nameHelpBlock" required="required" class="form-control" value="{{ prefill.minecraft_name }}">
           <span id="minecraft_nameHelpBlock" class="form-text text-muted">Figyelj oda, hogy pontosan írd be!</span>
         </div>
       </div>
       <div class="form-group row">
         <label for="email" class="col-3 col-form-label">E-mail cím</label>
         <div class="col-9">
-          <input id="email" name="email" placeholder="beluska69@cock.li" type="email" required="required" class="form-control">
+          <input id="email" name="email" placeholder="beluska69@cock.li" type="email" required="required" class="form-control" value="{{ prefill.email }}">
         </div>
       </div>
       <div class="form-group row">
         <label for="discord" class="col-3 col-form-label">Discord tag</label>
         <div class="col-9">
-          <input id="discord" name="discord" placeholder="Beluska#1234" type="text" required="required" class="form-control">
+          <input id="discord" name="discord" placeholder="Beluska#1234" type="text" required="required" class="form-control" value="{{ prefill.discord }}">
           <span id="discordHelpBlock" class="form-text text-muted">A tagságod automatikusan ellenőrzésre kerül!<br>Később nyugodtan változtathatsz nevet, a regisztrációd automatikusan követni fogja.</span>
         </div>
       </div>
       <div class="form-group row">
         <label for="password" class="col-3 col-form-label">Jelszó</label>
         <div class="col-9">
-          <input id="password" name="password" placeholder="*********" type="password" aria-describedby="passwordHelpBlock" required="required" class="form-control">
+          <input id="password" name="password" placeholder="*********" type="password" aria-describedby="passwordHelpBlock" required="required" class="form-control" value="">
           <span id="passwordHelpBlock" class="form-text text-muted">Ezzel tudsz majd belépni a szerverre</span>
         </div>
       </div>
       <div class="form-group row">
         <label for="password_verify" class="col-3 col-form-label">Jelszó mégegyszer</label>
         <div class="col-9">
-          <input id="password_verify" name="password_verify" placeholder="*********" type="password" required="required" class="form-control">
+          <input id="password_verify" name="password_verify" placeholder="*********" type="password" required="required" class="form-control" value="">
         </div>
       </div>
       
