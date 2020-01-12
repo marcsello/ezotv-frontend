@@ -4,7 +4,7 @@ from flask_classful import FlaskView
 
 import bleach
 
-from model import db, Player
+from model import db
 
 
 class RegisterView(FlaskView):
