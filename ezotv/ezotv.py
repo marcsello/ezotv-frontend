@@ -9,7 +9,7 @@ from model import db
 from utils import register_all_error_handlers
 
 # import views
-from views import HomeView, BackupsView, LoginView
+from views import HomeView, BackupsView, DashboardView
 
 from api_views import PlayerView
 
@@ -27,8 +27,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['EZOTV_DATABASE_URI']
 app.config['LOCAL_API_KEY'] = os.environ['EZOTV_LOCAL_API_KEY']
 app.config['LUNA_API_KEY'] = os.environ['EZOTV_LUNA_API_KEY']
-app.config['BASE_URL'] = os.environ['EZOTV_BASE_URL']  # https://ezotv.marcsello.com lol
-app.config['DISCORD_CLIENT_ID'] = os.environ['EZOTV_DISCORD_CLIENT_ID']
+app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.com
 
 # initialize stuff
 db.init_app(app)
@@ -40,7 +39,7 @@ with app.app_context():
 register_all_error_handlers(app)
 
 # register views
-for view in [LoginView, HomeView, BackupsView]:
+for view in [DashboardView, HomeView, BackupsView]:
 	view.register(app, trailing_slash=False)
 
 # register views

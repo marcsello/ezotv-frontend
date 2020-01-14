@@ -21,7 +21,7 @@
         <div class="card_footer">Online játékosok: {{data.server.players}}</div>
 </li>
         
-<li class="card clickable" onclick="window.location='/dashboard/login'" id="card_register">
+<li class="card clickable" onclick="window.location='{{ url_for("DashboardView:index") }}'" id="card_register">
         <p class="card_title_single">Regisztrálj a játékhoz</p>
         <p class="card_subtitle">Nálunk csak regisztrált játékosok tudnak játszani!</p>
 </li>
@@ -37,7 +37,7 @@
         <div class="card_footer">Köszönet: Krisuse</div>
 </li>
 
-<li class="card clickable blury_shadow" onclick="window.location='/backups';" id="card_backups">
+<li class="card clickable blury_shadow" onclick="window.location='{{ url_for("BackupsView:index") }}';" id="card_backups">
         <p class="card_title_single">Biztonsági mentések:</p>
         <p>Legfrissebb változat:</p>
         <p id="version_string">{{ data.backup.latest }}</p>

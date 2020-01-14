@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
-from .login_view import LoginView
+from .dashboard_view import DashboardView
 from .home_view import HomeView
-from .backup_view import BackupsView
+from .backups_view import BackupsView

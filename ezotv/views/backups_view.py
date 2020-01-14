@@ -9,7 +9,7 @@ import os.path
 
 class BackupsView(FlaskView):
 
-    def get(self):
+    def index(self):
 
         l = LunaSource(current_app.config['LUNA_API_KEY'])
 

@@ -8,7 +8,7 @@ class HomeView(FlaskView):
 
     route_base = '/'
 
-    def get(self):
+    def index(self):
 
         l = LunaSource(current_app.config['LUNA_API_KEY'])
 
