@@ -9,13 +9,13 @@ from utils import validate_rechaptcha
 
 class RegisterFormSchema(Schema):
 
-    name = fields.Str(required=True, validate=Length(min=3, max=32))
+    name = fields.Str(required=True, validate=Length(min=3, max=50))
     minecraft_name = fields.Str(required=True, validate=[Length(min=3, max=16), Regexp("[A-Za-z0-9_]*")])
-    email = fields.Email(required=True)
+    email = fields.Email(required=True, validate=Length(max=500))
     discord = fields.Str(required=True, validate=[Length(min=1, max=32), Regexp(".*#[0-9]{4}"), NoneOf(["discordtag", "everyone", "here"])])  # Kinda pointless being this strict
     password = fields.Str(required=True)
-    password_verify = fields.Str(load_only=True)
-    g_recaptcha_response = fields.Str(data_key="g-recaptcha-response")  # validated externally :(
+    password_verify = fields.Str(load_only=True, required=True)
+    g_recaptcha_response = fields.Str(data_key="g-recaptcha-response", load_only=True)
     submit = fields.Str(load_only=True, required=False, allow_none=True)
 
     @validates_schema
@@ -25,10 +25,10 @@ class RegisterFormSchema(Schema):
 
     @pre_load(pass_many=False)
     def sanitize_input(self, data, **kwargs):
-        data['name'] = bleach.clean(data['name'])
+        data['name'] = bleach.clean(data['name'], tags=[])
         return data
 
-    @validates("g_recaptcha_response")
+    @validates("g_recaptcha_response")  # True magic
     def validate_chaptcha(self, value):
         if not validate_rechaptcha(value):
             raise ValidationError("CHAPTCHA verification failed!")
