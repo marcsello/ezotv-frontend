@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 
-from .register_form_schema import RegisterFormSchema
+from .minecraft_form_schema import MinecraftFormSchema
 from .player_schama import PlayerSchema

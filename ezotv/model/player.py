@@ -7,7 +7,6 @@ class Player(db.Model):
 
     # Identification
     id = db.Column(db.Integer, primary_key=True, auto_increment=True)
-    name = db.Column(db.String(50), unique=False, nullable=False)
 
     # Important data
     minecraft_name = db.Column(db.String(16), unique=True, nullable=False)
@@ -15,7 +14,7 @@ class Player(db.Model):
     password = db.Column(db.String(255), unique=False, nullable=False)
     salt = db.Column(db.String(50), unique=False, nullable=False)
 
-    email = db.Column(db.String(500), unique=False, nullable=False)
+    # recieved via oauth2 memery
     discord_id = db.Column(db.String(32), unique=True, nullable=False)
 
     # administrative

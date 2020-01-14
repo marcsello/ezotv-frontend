@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="col-md-6 col-sm-12 mx-auto my-5">
+
+<div class="container">
+  <div class="row">
+
+      {% if error %}
+      <div class="alert alert-danger" role="alert">
+           {{ error }}
+      </div>
+      {%endif %}
+  
+    <div class="d-flex">
+    
+      <div class="p-2 align-self-center col-6 text-center">
+        <a href="{{ oauth_link }}">login via discord</a>
+      </div>
+      
+      <div class="p-2 col-6">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc blandit justo ligula, id euismod lectus tempor ac. Phasellus lorem est, vestibulum id nisi sit amet, finibus hendrerit arcu. Phasellus in sapien placerat, volutpat ipsum vel, finibus orci. Etiam dictum suscipit dui. Donec tincidunt tincidunt nisl, in varius lorem. Pellentesque a metus enim. Duis id nulla ante. Maecenas condimentum tortor ut venenatis bibendum. Cras auctor, ante id ultrices feugiat, mi tellus imperdiet ligula, non accumsan erat odio non metus. Fusce tellus erat, euismod sed gravida in, volutpat ut enim. Sed mollis vel arcu id malesuada.
+      </div>
+  
+    </div>
+
+  </div>    
+</div>
+
+
+</main>
+{% endblock %}
