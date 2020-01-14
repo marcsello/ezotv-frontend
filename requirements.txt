@@ -6,3 +6,4 @@ marshmallow-sqlalchemy>=0.17.0
 SQLAlchemy>=1.3.8
 mysqlclient>=1.4.4
 requests>=2.22.0
+Flask-Dance>=3.0.0

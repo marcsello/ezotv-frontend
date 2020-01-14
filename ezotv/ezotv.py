@@ -3,6 +3,8 @@ from flask import Flask
 from datetime import timedelta
 import os
 
+from flask_dance.contrib.discord import make_discord_blueprint
+
 
 # import stuff
 from model import db
@@ -29,6 +31,12 @@ app.config['LOCAL_API_KEY'] = os.environ['EZOTV_LOCAL_API_KEY']
 app.config['LUNA_API_KEY'] = os.environ['EZOTV_LUNA_API_KEY']
 app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.com
 
+# important stuff
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(12))
+app.config["DISCORD_OAUTH_CLIENT_ID"] = os.environ.get("EZOTV_DISCORD_OAUTH_CLIENT_ID")
+app.config["DISCORD_OAUTH_CLIENT_SECRET"] = os.environ.get("EZOTV_DISCORD_OAUTH_CLIENT_SECRET")
+
+
 # initialize stuff
 db.init_app(app)
 
@@ -45,6 +53,9 @@ for view in [DashboardView, HomeView, BackupsView]:
 # register views
 for view in [PlayerView]:
 	view.register(app, trailing_slash=False, route_prefix="/api/")
+
+discord_bp = make_discord_blueprint(scope="identify", redirect_to="DashboardView:index")
+app.register_blueprint(discord_bp, url_prefix="/dashboard/login")
 
 # start debuggig if needed
 if __name__ == "__main__":
