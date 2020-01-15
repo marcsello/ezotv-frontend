@@ -3,6 +3,7 @@ import requests
 from urllib.parse import urljoin
 
 # TODO: Schema checking
+# TODO: caching
 
 
 class LunaSource:

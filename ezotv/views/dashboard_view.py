@@ -25,6 +25,7 @@ class DashboardView(FlaskView):
     @login_required
     def logout(self):
         logout_user()
+        # TODO: revoke token???? Lehet ez nem kell
         return redirect(url_for("DashboardView:loginfo"))
 
     @login_required  # redirects to loginfo

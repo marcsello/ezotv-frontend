@@ -3,12 +3,12 @@ from marshmallow import fields, RAISE
 from marshmallow_sqlalchemy import ModelSchema
 from model import Player
 
-from model import db, Player
+from model import db, User
 
 
-class PlayerSchema(ModelSchema):
+class UserSchema(ModelSchema):
 
 	class Meta:
 		dump_only = ['id', 'registered']
-		model = Player
+		model = User
 		unknown = RAISE
