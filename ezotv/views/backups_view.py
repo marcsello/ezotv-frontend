@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-from flask import request, abort, render_template, current_app
+from flask import request, abort, render_template, current_app, flash
 from flask_classful import FlaskView
 from utils import LunaSource
 from urllib.parse import urljoin
 
 import os.path
+
+import requests.exceptions
 
 
 class BackupsView(FlaskView):
@@ -13,10 +15,18 @@ class BackupsView(FlaskView):
 
         l = LunaSource(current_app.config['LUNA_API_KEY'])
 
-        data = {}
-        for key, value in l.backup_list.items():
+        backup_list = {}  # Oké... ez így nagyon szar lesz
+        try:
+            backup_list = l.backup_list
 
-       #     key_readable = key.replace('_', ' ').capitalize()  # dunno
+        except requests.exceptions.ConnectionError:
+            flash("Nem sikerült kapcsolatba lépni Lunával")
+
+        except requests.exceptions.HTTPError:
+            flash("Luna hibával tért vissza")
+
+        data = {}
+        for key, value in backup_list.items():
 
             value.sort(reverse=True)
 
