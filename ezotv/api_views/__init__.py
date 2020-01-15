@@ -1,2 +1,2 @@
 #!/usr/bin/env python3
-from .player_view import PlayerView
+from .user_view import UserView

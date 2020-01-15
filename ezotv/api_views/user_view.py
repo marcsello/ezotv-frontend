@@ -7,7 +7,7 @@ import bleach
 from model import db
 
 
-class PlayerView(FlaskView):
+class UserView(FlaskView):
 
     @apikey_required
     @json_required

@@ -3,7 +3,7 @@ from .db import db
 from sqlalchemy.sql import func
 
 
-class Player(db.Model):
+class User(db.Model):
 
     # Identification
     id = db.Column(db.Integer, primary_key=True, auto_increment=True)

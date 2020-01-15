@@ -13,7 +13,7 @@ from utils import register_all_error_handlers
 # import views
 from views import HomeView, BackupsView, DashboardView
 
-from api_views import PlayerView
+from api_views import UserView
 
  ##### ##### ##### #### #  # ##### #    # ##### ####  ##### #     #####  #     #     ####  ##### #     # ##### ####   #
  #       #   #   # #    # #  #   # #    # #     #   # #     #     #   #  #  #  #     #   # #   # #  #  # #     #   #  #
@@ -51,7 +51,7 @@ for view in [DashboardView, HomeView, BackupsView]:
 	view.register(app, trailing_slash=False)
 
 # register views
-for view in [PlayerView]:
+for view in [UserView]:
 	view.register(app, trailing_slash=False, route_prefix="/api/")
 
 discord_bp = make_discord_blueprint(scope="identify", redirect_to="DashboardView:index")
