@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-from flask import request, abort, render_template, current_app
+from flask import request, abort, render_template, current_app, redirect, url_for, flash
 from flask_classful import FlaskView
+
+from flask_login import login_required, current_user, logout_user
 
 from urllib.parse import urljoin, quote
 
@@ -13,19 +15,21 @@ class DashboardView(FlaskView):
     route_prefix = "/dashboard/"
     route_base = '/'
 
-    def index(self):
+    def loginfo(self):
+        if current_user.is_authenticated:
+            return redirect(url_for("DashboardView:index"))
 
-        if not discord.authorized:
-            return render_template('login.html')
+        return render_template('loginfo.html')
+
+    @login_required  # redirects to loginfo
+    def index(self):
 
         try:
             r = discord.get("/api/users/@me")
-            r.raise_for_status()
-        except requests.exceptions.ConnectionError:
-            return render_template('login.html', error="Nem sikerült kommunikálni a Discord szervereivel!")
-
-        except requests.exceptions.HTTPError:
-            return render_template('login.html', error="A Discord nem várt hibával tért vissza. Esetleg megpróbálkozhatsz újra be jelentkezni.")
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+            flash("Nem sikerült kommunikálni a Discord szervereivel")
+            logout_user()
+            return redirect(url_for("DashboardView:loginfo"))
 
         return render_template('dashboard.html', discord_tag="{}#{}".format(r.json()['username'], r.json()['discriminator']))
 

@@ -3,12 +3,9 @@ from flask import Flask
 from datetime import timedelta
 import os
 
-from flask_dance.contrib.discord import make_discord_blueprint
-
-
 # import stuff
 from model import db
-from utils import register_all_error_handlers
+from utils import register_all_error_handlers, login_manager, discord_blueprint
 
 # import views
 from views import HomeView, BackupsView, DashboardView
@@ -54,8 +51,12 @@ for view in [DashboardView, HomeView, BackupsView]:
 for view in [UserView]:
 	view.register(app, trailing_slash=False, route_prefix="/api/")
 
-discord_bp = make_discord_blueprint(scope="identify", redirect_to="DashboardView:index")
-app.register_blueprint(discord_bp, url_prefix="/dashboard/login")
+
+app.register_blueprint(discord_blueprint, url_prefix="/dashboard/login")
+
+
+login_manager.init_app(app)
+
 
 # start debuggig if needed
 if __name__ == "__main__":
