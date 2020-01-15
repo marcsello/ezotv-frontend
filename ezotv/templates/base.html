@@ -18,7 +18,13 @@
 
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-           <div class="navbar-brand"><a href="{{ url_for('HomeView:index') }}" class="text-white">EZO.TV</a></div>
+           <div class="navbar-brand mr-auto"><a href="{{ url_for('HomeView:index') }}" class="text-white">EZO.TV</a></div>
+           
+           {% if current_user.is_authenticated %}
+           <form class="form-inline my-2 my-lg-0" method="POST" action={{ url_for('DashboardView:logout') }}>
+             <button class="btn btn-outline-danger my-sm-0" type="submit">Logout</button>
+           </form>
+          {% endif %}
 
     </header>
 

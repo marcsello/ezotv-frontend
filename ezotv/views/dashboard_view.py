@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from flask import request, abort, render_template, current_app, redirect, url_for, flash
-from flask_classful import FlaskView
+from flask_classful import FlaskView, route
 
 from flask_login import login_required, current_user, logout_user
 
@@ -20,6 +20,12 @@ class DashboardView(FlaskView):
             return redirect(url_for("DashboardView:index"))
 
         return render_template('loginfo.html')
+
+    @route("/logout", methods=['POST'])
+    @login_required
+    def logout(self):
+        logout_user()
+        return redirect(url_for("DashboardView:loginfo"))
 
     @login_required  # redirects to loginfo
     def index(self):
