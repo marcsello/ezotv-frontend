@@ -1,21 +1,99 @@
 {% extends "base.html" %}
 
+{% block page_title %}Regisztráció kezelése{% endblock %}
+
+{% block includes %}
+    {{ super() }}
+    <script src="/static/dashboard.js"></script>
+{% endblock %}
+
 {% block content %}
-<main class="col-md-6 col-sm-12 mx-auto my-5">
+<div class="row">
 
-      <h1>Dashboard</h1>
-
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}{% for message in messages %}
-            <div class="alert alert-danger" role="alert">
-            {{ message }}
+    <div class="col-sm-12 col-md-7 my-2">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <div class="d-inline">Minecraft adatok</div>
+                <div class="d-inline float-right"><a href="#" id="start_edit" class="btn btn-sm btn-primary">Szerkesztés</a><a href="#" id="cancel_edit" class="btn btn-sm btn-light d-none">Mégse</a></div>
             </div>
-          {% endfor %}{% endif %}
-      {% endwith %}
+            <div class="card-body">
 
-      
-      <p>{{ discord_tag }}</p>
- 
+                <form method="post" action="#" id="minecraft-data-form">
 
-</main>
+                    <div class="form-group row">
+                        <label for="minecraft_name" class="col-3 col-form-label">Játékosnév</label>
+                        <div class="col-9">
+                            <input id="minecraft_name" name="minecraft_name" readonly class="form-control-plaintext" type="text" aria-describedby="minecraft_nameHelpBlock" required class="form-control" value="" pattern="[A-Za-z0-9_]*" minlength="3" maxlength="16" data-original="" placeholder="Nincs megadva!">
+                            <span id="minecraft_nameHelpBlock" class="form-text text-muted d-none">Figyelj oda, hogy pontosan írd be!</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password" class="col-3 col-form-label">Jelszó</label>
+                        <div class="col-9">
+                            <input id="password" name="password" placeholder="*********" readonly class="form-control-plaintext" type="password" aria-describedby="passwordHelpBlock" required value="" data-original="">
+                            <span id="passwordHelpBlock" class="form-text text-muted d-none">Ezzel tudsz majd belépni a szerverre</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row d-none" id="password_verify_group">
+                        <label for="password_verify" class="col-3 col-form-label">Jelszó megerősítés</label>
+                        <div class="col-9">
+                            <input id="password_verify" name="password_verify" readonly class="form-control-plaintext" placeholder="*********" type="password" required value="" data-original="">
+                        </div>
+                    </div>
+
+                    <div class="form-group row d-none" id="submit_group">
+                        <div class="offset-3 col-9">
+                            <button name="submit" type="submit" class="btn btn-primary">Mentés</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-5 my-2">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Státusz
+            </div>
+            <div class="card-body">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Discord Tag: {{ discord_tag }}</li>
+                    <li class="list-group-item text-danger">Játékosnév nincs elfogadva!</li>
+                    <li class="list-group-item text-success">Csoport tagság ellenőrizve!</li>
+                    <li class="list-group-item text-muted">Nem szinkronizálható!</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-12 my-2">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Információk
+            </div>
+            <div class="card-body">
+
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ut ante nec elit condimentum mattis eu vel augue. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec orci tellus, tincidunt volutpat tellus in, rhoncus hendrerit odio. Nunc imperdiet nisl urna, ornare accumsan dui sodales et. Proin vel urna eget orci gravida efficitur. Donec justo neque, luctus vel risus quis, sagittis scelerisque ex. Fusce vulputate tincidunt urna, et sodales elit suscipit vitae.
+                </p>
+
+                <p class="card-text">
+                    Aenean semper, ligula quis dapibus consequat, nunc mauris sollicitudin dolor, in pretium enim velit nec odio. Cras elementum ex vitae lectus aliquam, a malesuada orci fringilla. Mauris quis ligula eget erat tristique blandit in at enim. Sed vestibulum, est et blandit tincidunt, ante tortor condimentum tortor, nec euismod eros diam finibus ex. Vestibulum vel sapien at tortor tincidunt imperdiet. Aliquam elementum feugiat iaculis. Nulla facilisi.
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

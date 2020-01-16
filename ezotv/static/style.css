@@ -12,3 +12,14 @@ body {
 #sticky-footer {
   flex-shrink: none;
 }
+
+
+#discord-login-button {
+  background-color: #7289DA !important;
+}
+
+#discord-login-button img {
+  display: inline-block;
+  height: 2em;
+  padding-right: 0.5em;
+}

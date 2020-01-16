@@ -1,50 +1,51 @@
 {% extends "base.html" %}
 
+{% block page_title %}Biztonsági mentések{% endblock %}
+
 {% block content %}
-<main class="col-md-6 col-sm-12 mx-auto my-5">
+<div class="row">
 
-      <h1>Biztonsági mentések</h1>
-      
-     {% with messages = get_flashed_messages() %}
-        {% if messages %}{% for message in messages %}
-            <div class="alert alert-danger" role="alert">
-            {{ message }}
-            </div>
-          {% endfor %}{% endif %}
-      {% endwith %}
+    <div class="col-md-6 col-sm-12 my-2">
+        <div id="accordion">
 
-      
-      <p>Biztonsági mentéseink szabadon elérhetőek. Érdemes letölteni archiválási célokból, hogy ha véletlen eltűnnénk nyom nélkül a műveitekről akkor is maradjon egy másolat.</p>
-      <p>Alább letölthetőek worldönként egyesével. A struktúra és formátum az AutoSaveWorld sajátja. Ebbe nem tervezünk belenyúlkálni.</p>
-      
-      <div id="accordion">
+            {% for world, backups in data.items() %}
 
-          {% for world, backups in data.items() %}
+            <div class="card">
 
-          <div class="card">
-          
-            <div class="card-header">
-              <a class="card-link" data-toggle="collapse" href="#collapse{{world}}">
-                {{world}}
-              </a>
-            </div>
-            
-            <div id="collapse{{world}}" class="collapse" data-parent="#accordion">
-              <div class="card-body">
-              
-                <div class="list-group">
-                  {% for backup  in backups %}
-                     <a class="list-group-item list-group-item-action" href="{{ backup.link }}">{{ backup.name }}</a>
-                  {% endfor %}
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapse{{world}}">{{world}}</a>
                 </div>
-        
-              </div>
+
+                <div id="collapse{{world}}" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <div class="list-group">
+                            {% for backup in backups %}
+                            <a class="list-group-item list-group-item-action" href="{{ backup.link }}">{{ backup.name }}</a> {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
             </div>
-          </div>
-        
-        {% endfor %}
+
+            {% endfor %}
 
         </div>
+    </div>
 
-</main>
+    <div class="col-md-6 col-sm-12 my-2">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Információk
+            </div>
+            <div class="card-body">
+                <p class="card-text">Biztonsági mentéseink szabadon elérhetőek. Érdemes letölteni archiválási célokból, hogy ha véletlen eltűnnénk nyom nélkül a műveitekről akkor is maradjon egy másolat.</p>
+                <p class="card-text">Balra letölthetőek worldönként egyesével. A struktúra és formátum az AutoSaveWorld sajátja. Ebbe nem tervezünk belenyúlkálni.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
+
+
