@@ -21,3 +21,4 @@ class User(UserMixin, db.Model):
     # administrative
     registered = db.Column(db.TIMESTAMP, nullable=False, server_default=func.now())
     in_sync = db.Column(db.Boolean, default=False, nullable=False)
+    name_approved = db.Column(db.Boolean, default=False, nullable=False)

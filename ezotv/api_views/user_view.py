@@ -24,9 +24,18 @@ class UserView(FlaskView):
     def index(self):
         with_password = 'withpassword' in request.args
         unsynced_only = 'unsyncedonly' in request.args
+        approved_only = 'approvedonly' in request.args
+
+        filterkeys = {}
 
         if unsynced_only:
-            users = User.query.filter_by(in_sync=False).all()
+            filterkeys['in_sync'] = False
+
+        if approved_only:
+            filterkeys['name_approved'] = False
+
+        if filterkeys:
+            users = User.query.filter_by(**filterkeys).all()
         else:
             users = User.query.all()
 

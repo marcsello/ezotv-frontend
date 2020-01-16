@@ -9,6 +9,6 @@ from model import db, User
 class UserSchema(ModelSchema):
 
 	class Meta:
-		dump_only = ['id', 'discord_id', 'minecraft_name', 'password', 'salt', 'registered']  # keeping in_sync modifiable only
+		dump_only = ['id', 'discord_id', 'minecraft_name', 'password', 'salt', 'registered', 'name_approved']  # keeping in_sync modifiable only
 		model = User
 		unknown = RAISE
