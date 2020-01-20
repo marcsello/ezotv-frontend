@@ -48,7 +48,12 @@ class DashboardView(FlaskView):
             logout_user()
             return redirect(url_for("DashboardView:loginfo"))
 
-        return render_template('dashboard.html', discord_tag="{}#{}".format(r.json()['username'], r.json()['discriminator']))
+        user_extra = {
+            "discord_tag": "{}#{}".format(r.json()['username'], r.json()['discriminator']),
+            "membership_verified": False
+        }
+
+        return render_template('dashboard.html', user_extra=user_extra)
 
     def _perform_data_update(self):
 

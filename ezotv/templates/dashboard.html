@@ -7,6 +7,11 @@
     <script src="/static/dashboard.js"></script>
 {% endblock %}
 
+
+{% macro colored_li(color, text) -%}
+    <li class="list-group-item text-{{ color }}">{{ text|safe }}</li>
+{%- endmacro %}
+
 {% block content %}
 <div class="row">
 
@@ -23,7 +28,7 @@
                     <div class="form-group row">
                         <label for="minecraft_name" class="col-3 col-form-label">Játékosnév</label>
                         <div class="col-9">
-                            <input id="minecraft_name" name="minecraft_name" readonly class="form-control-plaintext" type="text" aria-describedby="minecraft_nameHelpBlock" required class="form-control" value="" pattern="[A-Za-z0-9_]*" minlength="3" maxlength="16" data-original="" placeholder="Nincs megadva!">
+                            <input id="minecraft_name" name="minecraft_name" readonly class="form-control-plaintext" type="text" aria-describedby="minecraft_nameHelpBlock" required class="form-control" value="{{ current_user.minecraft_name or '' }}" pattern="[A-Za-z0-9_]*" minlength="3" maxlength="16" data-original="{{ current_user.minecraft_name or '' }}" placeholder="Nincs megadva!">
                             <span id="minecraft_nameHelpBlock" class="form-text text-muted d-none">Figyelj oda, hogy pontosan írd be!</span>
                         </div>
                     </div>
@@ -62,10 +67,39 @@
             <div class="card-body">
 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Discord Tag: {{ discord_tag }}</li>
-                    <li class="list-group-item text-danger">Játékosnév nincs elfogadva!</li>
-                    <li class="list-group-item text-success">Csoport tagság ellenőrizve!</li>
-                    <li class="list-group-item text-muted">Nem szinkronizálható!</li>
+                    <li class="list-group-item">Discord tag: {{ user_extra.discord_tag }}</li>
+                    
+                    {# name status #}
+                    {% if current_user.name_status.name == 'NEW' %} {# Köszönöm Jinja2... nagyon hűvös #}
+                        {{ colored_li('muted','Nincs játékosnév beállítva!') }}
+                    {% endif %}
+                    {% if current_user.name_status.name == 'CHANGED' %}
+                        {{ colored_li('warning','Játékosnév elfogadásra vár...') }}
+                    {% endif %}
+                    {% if current_user.name_status.name == 'APPROVED' %}
+                        {{ colored_li('success','Játékosnév elfogadva!') }}
+                    {% endif %}
+                    {% if current_user.name_status.name == 'UNAPPROVED' %}
+                        {{ colored_li('danger','Játékosnév elutasítva!') }}
+                    {% endif %}
+                    
+                    {# group membership #}
+                    {% if user_extra.membership_verified %}
+                        {{ colored_li('success','Csoport tagság ellenőrizve!') }}
+                    {% else %}
+                        {{ colored_li('danger','Nincs csoport tagság!') }}
+                    {% endif %}
+                    
+                    {# summary #}
+                    {% if user_extra.membership_verified and current_user.name_status.name == 'APPROVED' %}
+                        {% if user_extra.in_sync %}
+                            {{ colored_li('warning','Szinkronizációra vár...') }}
+                        {% else %}
+                            {{ colored_li('success','Szinkronizálva!') }}
+                        {% endif %}                    
+                    {% else %}
+                        {{ colored_li('muted','Nem szinkronizálható!') }}
+                    {% endif %}
                 </ul>
 
             </div>
