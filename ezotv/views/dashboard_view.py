@@ -18,7 +18,6 @@ class DashboardView(FlaskView):
     def loginfo(self):
         if current_user.is_authenticated:
             return redirect(url_for("DashboardView:index"))
-
         return render_template('loginfo.html')
 
     @route("/logout", methods=['POST'])  # POST to prevent redirect attack.... altrough not very good solution
@@ -34,7 +33,7 @@ class DashboardView(FlaskView):
         try:
             r = discord.get("/api/users/@me")
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
-            flash("Nem sikerült kommunikálni a Discord szervereivel")
+            flash("Nem sikerült kommunikálni a Discord szervereivel", "danger")
             logout_user()
             return redirect(url_for("DashboardView:loginfo"))
 

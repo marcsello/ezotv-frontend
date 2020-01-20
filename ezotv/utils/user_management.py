@@ -37,17 +37,17 @@ def load_user(user_id):
 @oauth_authorized.connect_via(discord_blueprint)
 def discord_logged_in(blueprint, token):
     if not token:
-        flash("Sikertelen bejelentkezés.", category="error")
+        flash("Sikertelen bejelentkezés.", "danger")
         return redirect(url_for(login_manager.login_view))  # go back to loginfo
 
     try:
         resp = blueprint.session.get("/api/users/@me")  # <- Ez amugy Discord specifikus
     except requests.exceptions.ConnectionError:
-        flash("Nem sikerült kapcsolatba lépni a {} szervereivel.".format(blueprint.name), category="error")
+        flash("Nem sikerült kapcsolatba lépni a {} szervereivel.".format(blueprint.name), "danger")
         return redirect(url_for(login_manager.login_view))  # go back to loginfo
 
     if not resp.ok:
-        flash("Nem sikerült megkapni az adataidat a {} szervereitől".format(blueprint.name), category="error")
+        flash("Nem sikerült megkapni az adataidat a {} szervereitől".format(blueprint.name), "danger")
         return redirect(url_for(login_manager.login_view))  # go back to loginfo
 
     info = resp.json()
@@ -84,4 +84,4 @@ def discord_error(blueprint, message, response):
     msg = ("OAuth error from {name}! " "message={message} response={response}").format(
         name=blueprint.name, message=message, response=response
     )
-    flash(msg, category="error")
+    flash(msg, "danger")

@@ -20,10 +20,10 @@ class BackupsView(FlaskView):
             backup_list = l.backup_list
 
         except requests.exceptions.ConnectionError:
-            flash("Nem sikerült kapcsolatba lépni Lunával")
+            flash("Nem sikerült kapcsolatba lépni Lunával", "danger")
 
         except requests.exceptions.HTTPError:
-            flash("Luna hibával tért vissza")
+            flash("Luna hibával tért vissza", "danger")
 
         data = {}
         for key, value in backup_list.items():
