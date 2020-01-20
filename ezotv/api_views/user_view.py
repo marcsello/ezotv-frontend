@@ -2,7 +2,6 @@
 from flask import request, abort, jsonify
 from flask_classful import FlaskView
 from utils import json_required, apikey_required
-import bleach
 
 from model import db, User
 from schemas import UserSchema
