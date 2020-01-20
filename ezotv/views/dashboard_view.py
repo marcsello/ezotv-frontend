@@ -33,13 +33,8 @@ class DashboardView(FlaskView):
         # TODO: revoke token???? Lehet ez nem kell
         return redirect(url_for("DashboardView:loginfo"))
 
-    @route('/', methods=['GET', 'POST'])
     @login_required  # redirects to loginfo
     def index(self):
-
-        if request.method == 'POST':
-            self._perform_data_update()
-            db.session.rollback()
 
         try:
             r = discord.get("/api/users/@me")
@@ -55,7 +50,8 @@ class DashboardView(FlaskView):
 
         return render_template('dashboard.html', user_extra=user_extra)
 
-    def _perform_data_update(self):
+    @login_required
+    def post(self):  # Using the Post-Redirect-Get pattern
 
         form_raw_data = dict(request.form)
 
@@ -66,7 +62,7 @@ class DashboardView(FlaskView):
             )
         except ValidationError as e:
             flash("Hiba a bevitt adatokban!", "danger")  # Akinek nincs HTML5 kompatibilis böngészője, az ott bassza meg
-            return
+            return redirect(url_for("DashboardView:index"))
 
         # Check for name change
         if form_data['minecraft_name'] != current_user.minecraft_name:
@@ -88,4 +84,6 @@ class DashboardView(FlaskView):
             db.session.commit()
         except sqlalchemy.exc.IntegrityError as e:
             flash("Ilyen névvel már létezik regisztráció!", "danger")
-            return
+            return redirect(url_for("DashboardView:index"))
+
+        return redirect(url_for("DashboardView:index"))
