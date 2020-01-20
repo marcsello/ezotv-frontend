@@ -24,8 +24,8 @@ def test_valid(minecraft_form_schema):
 
 def test_invalid_name(minecraft_form_schema):
     with pytest.raises(ValidationError):
-        minecraft_form_schema.load({
-            "minecraft_name": "á",
+        loaded = minecraft_form_schema.load({
+            "minecraft_name": "ábcd",
             "password": "123456",
             "password_verify": "123456"
         })
@@ -35,6 +35,15 @@ def test_toolong_name(minecraft_form_schema):
     with pytest.raises(ValidationError):
         minecraft_form_schema.load({
             "minecraft_name": "111dfqafgae39f9f93f9j3f9j3fj93f3f3f3f3",
+            "password": "123456",
+            "password_verify": "123456"
+        })
+
+
+def test_tooshort_name(minecraft_form_schema):
+    with pytest.raises(ValidationError):
+        minecraft_form_schema.load({
+            "minecraft_name": "a",
             "password": "123456",
             "password_verify": "123456"
         })
