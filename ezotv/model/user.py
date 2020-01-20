@@ -2,6 +2,14 @@
 from .db import db
 from sqlalchemy.sql import func
 from flask_login import UserMixin
+import enum
+
+
+class NameStatus(enum.Enum):
+    NEW = 0
+    CHANGED = 1
+    APPROVED = 2
+    UNAPPROVED = 3
 
 
 class User(UserMixin, db.Model):
@@ -21,4 +29,4 @@ class User(UserMixin, db.Model):
     # administrative
     registered = db.Column(db.TIMESTAMP, nullable=False, server_default=func.now())
     in_sync = db.Column(db.Boolean, default=False, nullable=False)
-    name_approved = db.Column(db.Boolean, default=False, nullable=False)
+    name_status = db.Column(db.Enum(NameStatus), default=NameStatus.NEW, nullable=False)
