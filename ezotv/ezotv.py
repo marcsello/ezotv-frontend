@@ -23,7 +23,7 @@ from api_views import UserView
 app = Flask(__name__)
 
 # configure flask app
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('EZOTV_DATABASE_URI',"sqlite://") # Default to memory db
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('EZOTV_DATABASE_URI', "sqlite://")  # Default to memory db
 app.config['LOCAL_API_KEY'] = os.environ['EZOTV_LOCAL_API_KEY']
 app.config['LUNA_API_KEY'] = os.environ['EZOTV_LUNA_API_KEY']
 app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.com
@@ -32,6 +32,7 @@ app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.c
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(12))
 app.config['DISCORD_OAUTH_CLIENT_ID'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_ID']
 app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_SECRET']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 # initialize stuff

@@ -21,7 +21,7 @@ class DashboardView(FlaskView):
 
         return render_template('loginfo.html')
 
-    @route("/logout", methods=['POST'])
+    @route("/logout", methods=['POST'])  # POST to prevent redirect attack.... altrough not very good solution
     @login_required
     def logout(self):
         logout_user()
