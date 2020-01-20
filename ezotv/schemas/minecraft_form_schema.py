@@ -5,7 +5,7 @@ from marshmallow.validate import Regexp, Length
 
 class MinecraftFormSchema(Schema):
 
-    minecraft_name = fields.Str(required=True, validate=[Length(min=3, max=16), Regexp("[A-Za-z0-9_]*")])
+    minecraft_name = fields.Str(required=True, validate=[Length(min=3, max=16), Regexp("^[A-Za-z0-9_]*$")])
 
     password = fields.Str(required=True, validate=Length(min=6))
     password_verify = fields.Str(load_only=True, required=True, validate=Length(min=6))
