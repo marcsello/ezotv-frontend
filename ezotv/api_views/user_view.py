@@ -3,7 +3,7 @@ from flask import request, abort, jsonify
 from flask_classful import FlaskView
 from utils import json_required, apikey_required
 
-from model import db, User
+from model import db, User, NameStatus
 from schemas import UserSchema
 
 from marshmallow import ValidationError
@@ -31,7 +31,7 @@ class UserView(FlaskView):
             filterkeys['in_sync'] = False
 
         if approved_only:
-            filterkeys['name_approved'] = False
+            filterkeys['name_status'] = NameStatus.APPROVED
 
         if filterkeys:
             users = User.query.filter_by(**filterkeys).all()
