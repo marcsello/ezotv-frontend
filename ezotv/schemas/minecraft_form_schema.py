@@ -7,8 +7,8 @@ class MinecraftFormSchema(Schema):
 
     minecraft_name = fields.Str(required=True, validate=[Length(min=3, max=16), Regexp("[A-Za-z0-9_]*")])
 
-    password = fields.Str(required=True)
-    password_verify = fields.Str(load_only=True, required=True)
+    password = fields.Str(required=True, validate=Length(min=6))
+    password_verify = fields.Str(load_only=True, required=True, validate=Length(min=6))
 
     submit = fields.Str(load_only=True, required=False, allow_none=True)
 
