@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from flask import Flask
 from datetime import timedelta
+from werkzeug.middleware.proxy_fix import ProxyFix
 import os
 
 # import stuff
@@ -22,6 +23,7 @@ from api_views import UserView
 
 # create flask app
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)
 
 # configure flask app
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('EZOTV_DATABASE_URI', "sqlite://")  # Default to memory db
@@ -39,6 +41,7 @@ app.config['DISCORD_ADMIN_ROLE'] = os.environ['EZOTV_DISCORD_ADMIN_ROLE']
 
 # wtf
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 
 # initialize stuff
