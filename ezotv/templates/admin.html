@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block page_title %}Adminisztráció{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-12 my-2">
+        <div id="accordion">
+
+            {% for user in users %}
+
+            <div class="card">
+
+                <a class="card-header bg-dark text-white" data-toggle="collapse" href="#collapse{{user.minecraft_name}}">
+                    <span class="text-white">{{user.minecraft_name}}</a>
+                </div>
+
+                <div id="collapse{{user.minecraft_name}}" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+
+                        <div class="container">
+                        
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <table class="table mb-0">
+                                        <tbody>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                            <tr><td>Key</td> <td>Value</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <form method="post">
+                                        <input type="hidden" id="12">
+                                        <input type="submit" class="btn btn-danger mx-1" name="verdict_deny" value="Elutasít" />
+                                        <input type="submit" class="btn btn-success mx-1" name="verdict_accept" value="Elfogad" />
+                                    </form>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+

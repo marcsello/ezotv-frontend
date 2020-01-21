@@ -8,7 +8,7 @@ from model import db
 from utils import register_all_error_handlers, login_manager, discord_blueprint
 
 # import views
-from views import HomeView, BackupsView, DashboardView
+from views import HomeView, BackupsView, DashboardView, AdminView
 
 from api_views import UserView
 
@@ -49,7 +49,7 @@ with app.app_context():
 register_all_error_handlers(app)
 
 # register views
-for view in [DashboardView, HomeView, BackupsView]:
+for view in [DashboardView, HomeView, BackupsView, AdminView]:
 	view.register(app, trailing_slash=False)
 
 # register views

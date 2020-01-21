@@ -2,3 +2,4 @@
 from .dashboard_view import DashboardView
 from .home_view import HomeView
 from .backups_view import BackupsView
+from .admin_view import AdminView
