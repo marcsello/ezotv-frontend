@@ -7,7 +7,7 @@ from flask_login import login_required, current_user, logout_user
 from urllib.parse import urljoin, quote
 
 from model import db, User, NameChange, NameStatus
-from utils import discord_bot
+from discordbot_tools import discord_bot
 
 
 class AdminView(FlaskView):
@@ -40,7 +40,6 @@ class AdminView(FlaskView):
 
                 extra_info[name_change.id].update({
                     "discord_tag": "{}#{}".format(members_lut[discord_id]['user']['username'], members_lut[discord_id]['user']['discriminator']),
-                    "discord_membership": True,
                     "discord_guild_joined": members_lut[discord_id]['joined_at']  # Ebbe bele kellene verni a gecit
                 })
 
@@ -48,7 +47,6 @@ class AdminView(FlaskView):
 
                 extra_info[name_change.id].update({
                     "discord_tag": "N/A",
-                    "discord_membership": False,
                     "discord_guild_joined": "N/A"
                 })
 

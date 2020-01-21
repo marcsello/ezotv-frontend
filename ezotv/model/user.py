@@ -2,6 +2,7 @@
 from .db import db
 from sqlalchemy.sql import func
 from flask_login import UserMixin
+from discordbot_tools import discord_bot
 import enum
 
 
@@ -30,3 +31,11 @@ class User(UserMixin, db.Model):
     registered = db.Column(db.TIMESTAMP, nullable=False, server_default=func.now())
     in_sync = db.Column(db.Boolean, default=False, nullable=False)
     name_status = db.Column(db.Enum(NameStatus), default=NameStatus.NEW, nullable=False)
+
+    @property
+    def is_member(self) -> bool:
+        return discord_bot.instance.check_membership(self.discord_id)
+
+    @property
+    def is_admin(self) -> bool:
+        return discord_bot.instance.check_is_admin(self.discord_id)

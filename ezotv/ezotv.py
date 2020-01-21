@@ -5,7 +5,8 @@ import os
 
 # import stuff
 from model import db
-from utils import register_all_error_handlers, login_manager, discord_blueprint, discord_bot
+from utils import register_all_error_handlers, login_manager, discord_blueprint
+from discordbot_tools import discord_bot
 
 # import views
 from views import HomeView, BackupsView, DashboardView, AdminView

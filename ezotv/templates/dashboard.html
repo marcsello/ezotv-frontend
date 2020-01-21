@@ -83,14 +83,14 @@
                     {% endif %}
                     
                     {# group membership #}
-                    {% if user_extra.membership_verified %}
+                    {% if current_user.is_member %}
                         {{ colored_li('success','Csoport tagság ellenőrizve!') }}
                     {% else %}
                         {{ colored_li('danger','Nincs csoport tagság!') }}
                     {% endif %}
                     
                     {# summary #}
-                    {% if user_extra.membership_verified and current_user.name_status.name == 'APPROVED' %}
+                    {% if current_user.is_member and current_user.name_status.name == 'APPROVED' %}
                         {% if current_user.in_sync %}
                             {{ colored_li('success','Szinkronizálva!') }}
                         {% else %}

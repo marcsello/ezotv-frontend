@@ -9,7 +9,7 @@ from urllib.parse import urljoin, quote
 from flask_dance.contrib.discord import discord
 import requests.exceptions
 
-from utils import RSA512SALTED_hash, discord_bot
+from utils import RSA512SALTED_hash
 from model import db, NameStatus, NameChange
 from schemas import MinecraftFormSchema
 
@@ -44,8 +44,7 @@ class DashboardView(FlaskView):
             return redirect(url_for("DashboardView:loginfo"))
 
         user_extra = {
-            "discord_tag": "{}#{}".format(r.json()['username'], r.json()['discriminator']),
-            "membership_verified": discord_bot.instance.check_membership(current_user.discord_id)
+            "discord_tag": "{}#{}".format(r.json()['username'], r.json()['discriminator'])
         }
 
         return render_template('dashboard.html', user_extra=user_extra)

@@ -4,8 +4,6 @@ from urllib.parse import urljoin
 
 import requests
 
-from functools import wraps
-
 #
 # Fogadok egy sörben magammal, hogy ha valami elromlik prodban.... az ebben a fájlban lesz...  -- Marcsello 2020-01-21 01:33
 #
@@ -13,11 +11,13 @@ from functools import wraps
 
 class DiscordBot(object):
 
-    def __init__(self, bot_token: str, guild_id: str):
+    def __init__(self, bot_token: str, guild_id: str, admin_role_name: str):
         self._session = requests.Session()
         self._session.headers.update({"Authorization": "Bot {}".format(bot_token)})
         self._url_base = "https://discordapp.com/api/guilds/{}/".format(guild_id)
         self._roles_ilut = {}  # inverse lookup table
+
+        self._admin_role_name = admin_role_name
 
     def check_membership(self, userid: str) -> bool:
         r = self._session.get(urljoin(self._url_base, "members/{}".format(userid)))
@@ -51,6 +51,9 @@ class DiscordBot(object):
 
         return self._roles_ilut[rolename] in r.json()['roles']
 
+    def check_is_admin(self, userid: str) -> bool:
+        return self.check_for_role(userid, self._admin_role_name)
+
     def get_members(self) -> list:
         r = self._session.get(urljoin(self._url_base, "members?limit=1000"))
         r.raise_for_status()
@@ -79,13 +82,9 @@ class FlaskDiscordBot(object):
             del ctx.discordbot
 
     @property
-    def instance(self):
+    def instance(self) -> DiscordBot:
         ctx = _app_ctx_stack.top
         if ctx is not None:
             if not hasattr(ctx, 'discordbot'):
-                ctx.discordbot = DiscordBot(current_app.config['DISCORD_BOT_TOKEN'], current_app.config['DISCORD_GUILD_ID'])
+                ctx.discordbot = DiscordBot(current_app.config['DISCORD_BOT_TOKEN'], current_app.config['DISCORD_GUILD_ID'], current_app.config['DISCORD_ADMIN_ROLE'])
             return ctx.discordbot
-
-
-# Meme
-discord_bot = FlaskDiscordBot()
