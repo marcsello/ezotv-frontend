@@ -71,10 +71,15 @@ class DiscordBot(object):
         return self._roles_ilut[rolename] in r.json['roles']
 
     @__autoinit
-    def get_members_lut(self, userid: str) -> dict:
+    def get_members(self) -> list:
         r = self._session.get(urljoin(self._url_base, "members?limit=1000"))
         r.raise_for_status()
 
-        members = r.json
+        return r.json()  # WTF ?!
 
-        return {member['user']['id']: member['user']['username'] for member in members}
+    @__autoinit
+    def get_members_lut(self) -> dict:
+
+        members = self.get_members()
+
+        return {member['user']['id']: member for member in members}

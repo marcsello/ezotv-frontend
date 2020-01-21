@@ -19,11 +19,30 @@ class AdminView(FlaskView):
 
     def index(self):
 
-        extra_info = {1: {
-            "discord_tag": "Test#1234",
-            "discord_membership": True,
-            "discord_guild_joined": "yesterday"
-        }}
+        members_lut = self.discord_bot.get_members_lut()
 
-        return render_template("admin.html", name_changes=NameChange.query.all(), extra_info=extra_info)
+        name_changes = NameChange.query.all()
+        extra_info = {}
+
+        for name_change in name_changes:
+
+            discord_id = name_change.user.discord_id
+
+            if discord_id in members_lut.keys():
+
+                extra_info[name_change.id] = {
+                    "discord_tag": "{}#{}".format(members_lut[discord_id]['user']['username'], members_lut[discord_id]['user']['discriminator']),
+                    "discord_membership": True,
+                    "discord_guild_joined": members_lut[discord_id]['joined_at']  # Ebbe bele kellene verni a gecit
+                }
+
+            else:
+
+                extra_info[name_change.id] = {
+                    "discord_tag": "N/A",
+                    "discord_membership": False,
+                    "discord_guild_joined": "N/A"
+                }
+
+        return render_template("admin.html", name_changes=name_changes, extra_info=extra_info)
 
