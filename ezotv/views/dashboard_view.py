@@ -87,4 +87,5 @@ class DashboardView(FlaskView):
             flash("Ilyen névvel már létezik regisztráció!", "danger")
             return redirect(url_for("DashboardView:index"))
 
+        flash("Adatok elmentve!", "info")
         return redirect(url_for("DashboardView:index"))
