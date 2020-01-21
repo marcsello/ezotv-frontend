@@ -17,6 +17,11 @@ class AdminView(FlaskView):
     discord_bot = DiscordBot()
     decorators = [login_required]
 
+    @login_required
+    def before_request(self, name):  # gagyi permission check
+        if not self.discord_bot.check_for_role(current_user.discord_id, current_app.config['DISCORD_ADMIN_ROLE']):
+            abort(403)
+
     def index(self):
 
         members_lut = self.discord_bot.get_members_lut()

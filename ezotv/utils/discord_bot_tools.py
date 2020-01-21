@@ -54,7 +54,7 @@ class DiscordBot(object):
             r = self._session.get(urljoin(self._url_base, "roles?limit=1000"))
             r.raise_for_status()
 
-            roles = r.json
+            roles = r.json()
 
             self._roles_ilut = {role['name']: role['id'] for role in roles}
 
@@ -68,7 +68,7 @@ class DiscordBot(object):
         else:
             r.raise_for_status()
 
-        return self._roles_ilut[rolename] in r.json['roles']
+        return self._roles_ilut[rolename] in r.json()['roles']
 
     @__autoinit
     def get_members(self) -> list:

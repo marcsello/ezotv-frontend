@@ -34,6 +34,7 @@ app.config['DISCORD_OAUTH_CLIENT_ID'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_I
 app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_SECRET']
 app.config['DISCORD_BOT_TOKEN'] = os.environ['EZOTV_DISCORD_BOT_TOKEN']
 app.config['DISCORD_GUILD_ID'] = os.environ['EZOTV_DISCORD_GUILD_ID']
+app.config['DISCORD_ADMIN_ROLE'] = os.environ['EZOTV_DISCORD_ADMIN_ROLE']
 
 # wtf
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
