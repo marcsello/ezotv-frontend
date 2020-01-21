@@ -80,8 +80,13 @@ def discord_logged_in(blueprint, token):
 
 # notify on OAuth provider error
 @oauth_error.connect_via(discord_blueprint)
-def discord_error(blueprint, message, response):
-    msg = ("OAuth error from {name}! " "message={message} response={response}").format(
-        name=blueprint.name, message=message, response=response
-    )
-    flash(msg, "danger")
+def discord_error(blueprint, error, error_description, error_uri):
+
+    if error == 'access_denied':
+        flash("A hozzáférési engedély nem lett megadva!", "warning")
+    else:
+
+        msg = ("OAuth error from {name}! {error}: {error_description}").format(
+            name=blueprint.name, error=error, error_description=error_description
+        )
+        flash(msg, "danger")
