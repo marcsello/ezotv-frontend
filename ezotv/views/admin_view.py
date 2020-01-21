@@ -6,7 +6,7 @@ from flask_login import login_required, current_user, logout_user
 
 from urllib.parse import urljoin, quote
 
-from model import db, User
+from model import db, User, NameChange
 from utils import DiscordBot
 
 
@@ -19,5 +19,11 @@ class AdminView(FlaskView):
 
     def index(self):
 
-        return render_template("admin.html", users=User.query.all())
+        extra_info = {1: {
+            "discord_tag": "Test#1234",
+            "discord_membership": True,
+            "discord_guild_joined": "yesterday"
+        }}
+
+        return render_template("admin.html", name_changes=NameChange.query.all(), extra_info=extra_info)
 
