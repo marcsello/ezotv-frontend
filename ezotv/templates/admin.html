@@ -14,9 +14,9 @@
 
                 <a class="card-header bg-dark text-white" data-toggle="collapse" href="#collapse{{name_change.id}}">
                     {% if name_change.old_name %}
-                        <span class="text-white">{{name_change.old_name}} ⇰ {{name_change.user.minecraft_name}}</span>
+                        <span class="text-white card-link">{{name_change.old_name}} ⇰ {{name_change.user.minecraft_name}}</span>
                     {% else %}
-                        <span class="text-white">✱ {{name_change.user.minecraft_name}}</span>
+                        <span class="text-white card-link">✱ {{name_change.user.minecraft_name}}</span>
                     {% endif %}
                 </a>
 
