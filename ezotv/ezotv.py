@@ -32,7 +32,7 @@ app.config['LUNA_API_KEY'] = os.environ['EZOTV_LUNA_API_KEY']
 app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.com
 
 # important stuff
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(12))
+app.secret_key = os.environ.get('EZOTV_SECRET_KEY', os.urandom(12))
 app.config['DISCORD_OAUTH_CLIENT_ID'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_ID']
 app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_SECRET']
 app.config['DISCORD_BOT_TOKEN'] = os.environ['EZOTV_DISCORD_BOT_TOKEN']
