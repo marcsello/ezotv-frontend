@@ -23,9 +23,14 @@
         <div class="navbar-brand mr-auto"><a href="/" class="text-white">EZO.TV</a></div>
 
         {% if current_user.is_authenticated %}
-        <form class="form-inline my-2 my-lg-0" method="POST" action={{ url_for( 'DashboardView:logout') }}>
-            <button class="btn btn-outline-danger my-sm-0" type="submit">Kijelentkezés</button>
-        </form>
+        
+            {% if current_user.is_admin %}
+                <a href={{ url_for( 'AdminView:index') }} class="btn btn-outline-success mx-1">Adminisztráció</a>
+            {% endif %}
+            
+            <form class="form-inline my-0 mx-1" method="POST" action={{ url_for( 'DashboardView:logout') }}>
+                <button class="btn btn-outline-danger" type="submit">Kijelentkezés</button>
+            </form>
         {% endif %}
 
     </header>
