@@ -6,66 +6,72 @@
 <div class="row">
 
     <div class="col-12 my-2">
-        <div id="accordion">
-
-            {% for name_change in name_changes %}
-
-            <div class="card">
-
-                <a class="card-header bg-dark text-white" data-toggle="collapse" href="#collapse{{name_change.id}}">
-                    {% if name_change.old_name %}
-                        <span class="text-white card-link">{{name_change.old_name}} ⇰ {{name_change.user.minecraft_name}}</span>
-                    {% else %}
-                        <span class="text-white card-link">✱ {{name_change.user.minecraft_name}}</span>
-                    {% endif %}
-                </a>
-
-                <div id="collapse{{name_change.id}}" class="collapse" data-parent="#accordion">
-                    <div class="card-body">
-
-                        <div class="container">
-                        
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <table class="table mb-0">
-                                        <tbody>
-                                            <tr><td>Új Minecraft név:</td> <td>{{ name_change.user.minecraft_name }}</td></tr>
-                                            <tr><td>Régi Minecraft név:</td> <td class="{{ 'text-muted' if not name_change.old_name }}">{{ name_change.old_name or 'Nem volt' }}</td></tr>
-                                            <tr><td>Kérelem benyújtva:</td> <td>{{ name_change.created }}</td></tr>
-                                            <tr><td>Itt regisztrált:</td> <td>{{ name_change.user.registered }}</td></tr>
-                                        </tbody>
-                                    </table>
+        
+        {% if name_changes %}
+        
+            <div id="accordion">
+            
+                {% for name_change in name_changes %}
+    
+                <div class="card">
+    
+                    <a class="card-header bg-dark text-white" data-toggle="collapse" href="#collapse{{name_change.id}}">
+                        {% if name_change.old_name %}
+                            <span class="text-white card-link">{{name_change.old_name}} ⇰ {{name_change.user.minecraft_name}}</span>
+                        {% else %}
+                            <span class="text-white card-link">✱ {{name_change.user.minecraft_name}}</span>
+                        {% endif %}
+                    </a>
+    
+                    <div id="collapse{{name_change.id}}" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+    
+                            <div class="container">
+                            
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <table class="table mb-0">
+                                            <tbody>
+                                                <tr><td>Új Minecraft név:</td> <td>{{ name_change.user.minecraft_name }}</td></tr>
+                                                <tr><td>Régi Minecraft név:</td> <td class="{{ 'text-muted' if not name_change.old_name }}">{{ name_change.old_name or 'Nem volt' }}</td></tr>
+                                                <tr><td>Kérelem benyújtva:</td> <td>{{ name_change.created }}</td></tr>
+                                                <tr><td>Itt regisztrált:</td> <td>{{ name_change.user.registered }}</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr><td>Discord tag:</td> <td>{{ extra_info[name_change.id].discord_tag }}</td></tr>
+                                                <tr><td>Discord csoport tagság:</td> <td>{{ extra_info[name_change.id].discord_membership }}</td></tr>
+                                                <tr><td>Discord csoport tagság kezdete:</td> <td>{{ extra_info[name_change.id].discord_guild_joined }}</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr><td>Discord tag:</td> <td>{{ extra_info[name_change.id].discord_tag }}</td></tr>
-                                            <tr><td>Discord csoport tagság:</td> <td>{{ extra_info[name_change.id].discord_membership }}</td></tr>
-                                            <tr><td>Discord csoport tagság kezdete:</td> <td>{{ extra_info[name_change.id].discord_guild_joined }}</td></tr>
-                                        </tbody>
-                                    </table>
+    
+                                <div class="row">
+                                    <div class="col-12">
+                                        <form method="post">
+                                            <input type="hidden" name="id" value="{{ name_change.id }}">
+                                            <input type="submit" class="btn btn-danger mx-1" name="verdict_deny" value="Elutasít" />
+                                            <input type="submit" class="btn btn-success mx-1" name="verdict_accept" value="Elfogad" />
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <form method="post">
-                                        <input type="hidden" name="id" value="{{ name_change.id }}">
-                                        <input type="submit" class="btn btn-danger mx-1" name="verdict_deny" value="Elutasít" />
-                                        <input type="submit" class="btn btn-success mx-1" name="verdict_accept" value="Elfogad" />
-                                    </form>
-                                </div>
-                            </div>
-
+    
+                        </div>
                     </div>
                 </div>
+    
+                {% endfor %}
+    
             </div>
 
-            {% endfor %}
-
-        </div>
+        {% else %} {# empty list #}
+            <p class="text-center">Minden el van intézve! Ideje sörözni!</p>
+        {% endif %}
     </div>
-
 </div>
 {% endblock %}
 
