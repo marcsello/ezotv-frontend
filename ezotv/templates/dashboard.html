@@ -93,9 +93,9 @@
                     {# summary #}
                     {% if user_extra.membership_verified and current_user.name_status.name == 'APPROVED' %}
                         {% if user_extra.in_sync %}
-                            {{ colored_li('warning','Szinkronizációra vár...') }}
-                        {% else %}
                             {{ colored_li('success','Szinkronizálva!') }}
+                        {% else %}
+                            {{ colored_li('warning','Szinkronizációra vár...') }}
                         {% endif %}                    
                     {% else %}
                         {{ colored_li('muted','Nem szinkronizálható!') }}
