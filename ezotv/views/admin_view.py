@@ -9,6 +9,8 @@ from urllib.parse import urljoin, quote
 from model import db, User, NameChange, NameStatus
 from discordbot_tools import discord_bot
 
+from datetime import datetime
+
 
 class AdminView(FlaskView):
 
@@ -18,7 +20,7 @@ class AdminView(FlaskView):
 
     @login_required
     def before_request(self, name):  # gagyi permission check
-        if not discord_bot.instance.check_for_role(current_user.discord_id, current_app.config['DISCORD_ADMIN_ROLE']):
+        if not current_user.is_admin:
             abort(403)
 
     def index(self):
@@ -40,7 +42,7 @@ class AdminView(FlaskView):
 
                 extra_info[name_change.id].update({
                     "discord_tag": "{}#{}".format(members_lut[discord_id]['user']['username'], members_lut[discord_id]['user']['discriminator']),
-                    "discord_guild_joined": members_lut[discord_id]['joined_at']  # Ebbe bele kellene verni a gecit
+                    "discord_guild_joined": datetime.strptime(members_lut[discord_id]['joined_at'], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S")  # Ebbe bele kellene verni a gecit
                 })
 
             else:
