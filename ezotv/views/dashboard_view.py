@@ -68,8 +68,8 @@ class DashboardView(FlaskView):
         # Check for name change
         if form_data['minecraft_name'] != current_user.minecraft_name:
 
-            NameChange.query.filter(NameChange.user == current_user).delete()  # Invalidate all previous requests
-            change_object = NameChange(old_name=current_user.minecraft_name, user=current_user)
+            NameChange.query.filter(db.and_(NameChange.user == current_user, NameChange.active == True)).delete()  # Invalidate all previous requests
+            change_object = NameChange(old_name=current_user.minecraft_name, user=current_user, active=True)
 
             current_user.minecraft_name = form_data['minecraft_name']
             current_user.name_status = NameStatus.CHANGED

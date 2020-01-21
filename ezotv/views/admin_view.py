@@ -26,28 +26,32 @@ class AdminView(FlaskView):
 
         members_lut = self.discord_bot.get_members_lut()
 
-        name_changes = NameChange.query.all()
+        name_changes = NameChange.query.filter_by(active=True).all()
         extra_info = {}
 
         for name_change in name_changes:
+
+            extra_info[name_change.id] = {
+                "total_changes": NameChange.query.filter(NameChange.user == name_change.user).count()
+            }
 
             discord_id = name_change.user.discord_id
 
             if discord_id in members_lut.keys():
 
-                extra_info[name_change.id] = {
+                extra_info[name_change.id].update({
                     "discord_tag": "{}#{}".format(members_lut[discord_id]['user']['username'], members_lut[discord_id]['user']['discriminator']),
                     "discord_membership": True,
                     "discord_guild_joined": members_lut[discord_id]['joined_at']  # Ebbe bele kellene verni a gecit
-                }
+                })
 
             else:
 
-                extra_info[name_change.id] = {
+                extra_info[name_change.id].update({
                     "discord_tag": "N/A",
                     "discord_membership": False,
                     "discord_guild_joined": "N/A"
-                }
+                })
 
         return render_template("admin.html", name_changes=name_changes, extra_info=extra_info)
 
@@ -75,7 +79,9 @@ class AdminView(FlaskView):
         user.name_status.in_sync = False
 
         db.session.add(user)
-        db.session.delete(namechange)
+
+        namechange.active = False
+        db.session.add(namechange)
 
         db.session.commit()  # Itt nem sérthetünk meg constraint
 

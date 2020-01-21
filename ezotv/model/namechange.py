@@ -15,3 +15,5 @@ class NameChange(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     user = db.relationship(User)  # NO BACKREF
+
+    active = db.Column(db.Boolean, default=True, nullable=False)
