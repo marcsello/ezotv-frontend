@@ -10,7 +10,7 @@ from flask_dance.contrib.discord import discord
 import requests.exceptions
 
 from utils import RSA512SALTED_hash, DiscordBot
-from model import db, NameStatus
+from model import db, NameStatus, NameChange
 from schemas import MinecraftFormSchema
 
 
@@ -67,8 +67,14 @@ class DashboardView(FlaskView):
 
         # Check for name change
         if form_data['minecraft_name'] != current_user.minecraft_name:
+
+            NameChange.query.filter(NameChange.user == current_user).delete()  # Invalidate all previous requests
+            change_object = NameChange(old_name=current_user.minecraft_name, user=current_user)
+
             current_user.minecraft_name = form_data['minecraft_name']
             current_user.name_status = NameStatus.CHANGED
+
+            db.session.add(change_object)
 
         # Hash password for AuthMe RSA512SALTED format
         password_hashed, password_salt = RSA512SALTED_hash(form_data['password'])
