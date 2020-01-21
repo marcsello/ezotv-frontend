@@ -32,6 +32,10 @@ app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.c
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(12))
 app.config['DISCORD_OAUTH_CLIENT_ID'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_ID']
 app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIENT_SECRET']
+app.config['DISCORD_BOT_TOKEN'] = os.environ['EZOTV_DISCORD_BOT_TOKEN']
+app.config['DISCORD_GUILD_ID'] = os.environ['EZOTV_DISCORD_GUILD_ID']
+
+# wtf
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
