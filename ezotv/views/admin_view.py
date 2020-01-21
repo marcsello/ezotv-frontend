@@ -9,6 +9,7 @@ from urllib.parse import urljoin, quote
 from model import db, User, NameChange, NameStatus
 from discordbot_tools import discord_bot
 
+from utils import admin_required
 from datetime import datetime
 
 
@@ -16,12 +17,7 @@ class AdminView(FlaskView):
 
     route_prefix = "/dashboard/"
 
-    decorators = [login_required]
-
-    @login_required
-    def before_request(self, name):  # gagyi permission check
-        if not current_user.is_admin:
-            abort(403)
+    decorators = [login_required, admin_required]
 
     def index(self):
 
