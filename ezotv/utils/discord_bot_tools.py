@@ -15,7 +15,7 @@ class DiscordBot(object):
 
     def __init__(self):
         self._session = requests.Session()
-        self._roles_lut = {}
+        self._roles_ilut = {}  # inverse lookup table
         self._app_initialized = False
 
     def init_app(self, app):  # Configured by Flask
@@ -50,15 +50,15 @@ class DiscordBot(object):
     @__autoinit
     def check_for_role(self, userid: str, rolename: str) -> bool:
 
-        if not self._roles_lut:
+        if not self._roles_ilut:
             r = self._session.get(urljoin(self._url_base, "roles?limit=1000"))
             r.raise_for_status()
 
             roles = r.json
 
-            self._roles_lut = {role['name']: role['id'] for role in roles}
+            self._roles_ilut = {role['name']: role['id'] for role in roles}
 
-        if rolename not in self._roles_lut.keys():
+        if rolename not in self._roles_ilut.keys():
             return False
 
         r = self._session.get(urljoin(self._url_base, "members/{}".format(userid)))
@@ -68,4 +68,13 @@ class DiscordBot(object):
         else:
             r.raise_for_status()
 
-        return self._roles_lut[rolename] in r.json['roles']
+        return self._roles_ilut[rolename] in r.json['roles']
+
+    @__autoinit
+    def get_members_lut(self, userid: str) -> dict:
+        r = self._session.get(urljoin(self._url_base, "members?limit=1000"))
+        r.raise_for_status()
+
+        members = r.json
+
+        return {member['user']['id']: member['user']['username'] for member in members}
