@@ -7,24 +7,23 @@ from flask_login import login_required, current_user, logout_user
 from urllib.parse import urljoin, quote
 
 from model import db, User, NameChange, NameStatus
-from utils import DiscordBot
+from utils import discord_bot
 
 
 class AdminView(FlaskView):
 
     route_prefix = "/dashboard/"
 
-    discord_bot = DiscordBot()
     decorators = [login_required]
 
     @login_required
     def before_request(self, name):  # gagyi permission check
-        if not self.discord_bot.check_for_role(current_user.discord_id, current_app.config['DISCORD_ADMIN_ROLE']):
+        if not discord_bot.instance.check_for_role(current_user.discord_id, current_app.config['DISCORD_ADMIN_ROLE']):
             abort(403)
 
     def index(self):
 
-        members_lut = self.discord_bot.get_members_lut()
+        members_lut = discord_bot.instance.get_members_lut()
 
         name_changes = NameChange.query.filter_by(active=True).all()
         extra_info = {}

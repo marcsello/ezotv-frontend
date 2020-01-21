@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import current_app
+from flask import current_app, _app_ctx_stack
 from urllib.parse import urljoin
 
 import requests
@@ -13,30 +13,12 @@ from functools import wraps
 
 class DiscordBot(object):
 
-    def __init__(self):
+    def __init__(self, bot_token: str, guild_id: str):
         self._session = requests.Session()
+        self._session.headers.update({"Authorization": "Bot {}".format(bot_token)})
+        self._url_base = "https://discordapp.com/api/guilds/{}/".format(guild_id)
         self._roles_ilut = {}  # inverse lookup table
-        self._app_initialized = False
 
-    def init_app(self, app):  # Configured by Flask
-        self._session.headers.update({"Authorization": "Bot {}".format(app.config['DISCORD_BOT_TOKEN'])})
-        self._url_base = "https://discordapp.com/api/guilds/{}/".format(app.config['DISCORD_GUILD_ID'])
-
-        self._app_initialized = True
-
-    def __autoinit(func):  # Highly magician thingy
-
-        @wraps(func)
-        def call(self, *args, **kwargs):
-
-            if not self._app_initialized:
-                self.init_app(current_app)
-
-            return func(self, *args, **kwargs)
-
-        return call
-
-    @__autoinit  # this looks like a snail lol
     def check_membership(self, userid: str) -> bool:
         r = self._session.get(urljoin(self._url_base, "members/{}".format(userid)))
 
@@ -47,7 +29,6 @@ class DiscordBot(object):
         else:
             r.raise_for_status()
 
-    @__autoinit
     def check_for_role(self, userid: str, rolename: str) -> bool:
 
         if not self._roles_ilut:
@@ -70,16 +51,41 @@ class DiscordBot(object):
 
         return self._roles_ilut[rolename] in r.json()['roles']
 
-    @__autoinit
     def get_members(self) -> list:
         r = self._session.get(urljoin(self._url_base, "members?limit=1000"))
         r.raise_for_status()
 
         return r.json()  # WTF ?!
 
-    @__autoinit
     def get_members_lut(self) -> dict:
 
         members = self.get_members()
 
         return {member['user']['id']: member for member in members}
+
+
+class FlaskDiscordBot(object):
+
+    def __init__(self, app=None):
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app):  # Configured by Flask
+        app.teardown_appcontext(self.teardown)
+
+    def teardown(self, exception):
+        ctx = _app_ctx_stack.top
+        if hasattr(ctx, 'discordbot'):
+            del ctx.discordbot
+
+    @property
+    def instance(self):
+        ctx = _app_ctx_stack.top
+        if ctx is not None:
+            if not hasattr(ctx, 'discordbot'):
+                ctx.discordbot = DiscordBot(current_app.config['DISCORD_BOT_TOKEN'], current_app.config['DISCORD_GUILD_ID'])
+            return ctx.discordbot
+
+
+# Meme
+discord_bot = FlaskDiscordBot()

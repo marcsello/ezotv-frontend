@@ -5,7 +5,7 @@ import os
 
 # import stuff
 from model import db
-from utils import register_all_error_handlers, login_manager, discord_blueprint
+from utils import register_all_error_handlers, login_manager, discord_blueprint, discord_bot
 
 # import views
 from views import HomeView, BackupsView, DashboardView, AdminView
@@ -45,6 +45,8 @@ db.init_app(app)
 
 with app.app_context():
 	db.create_all()
+
+discord_bot.init_app(app)
 
 # register error handlers
 register_all_error_handlers(app)
