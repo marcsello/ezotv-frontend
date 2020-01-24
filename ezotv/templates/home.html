@@ -16,7 +16,7 @@
 
 <ul class="cards_container">
         
-<li class="card {% if data.server.online %} srv_status_online {% else %} srv_status_online {% endif %}" id="card_server_status">
+<li class="card {% if data.server.online %} srv_status_online {% else %} srv_status_offline {% endif %}" id="card_server_status">
         <p>A Minecraft szerver</p><p id="server_status">{% if data.server.online %} ONLINE {% else %} OFFLINE {% endif %}</p><p>Cím: celestia.marcsello.com</p>
         <div class="card_footer">Online játékosok: {{data.server.players}}</div>
 </li>
