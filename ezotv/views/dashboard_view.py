@@ -3,6 +3,7 @@ from flask import request, abort, render_template, current_app, redirect, url_fo
 from flask_classful import FlaskView, route
 
 from flask_login import login_required, current_user, logout_user
+import sqlalchemy.exc
 
 from urllib.parse import urljoin, quote
 
