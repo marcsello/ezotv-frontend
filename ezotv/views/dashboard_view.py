@@ -8,6 +8,7 @@ import sqlalchemy.exc
 from urllib.parse import urljoin, quote
 
 from flask_dance.contrib.discord import discord
+from oauthlib.oauth2.rfc6749.errors import InvalidGrantError, TokenExpiredError
 import requests.exceptions
 
 from utils import RSA512SALTED_hash
@@ -41,6 +42,10 @@ class DashboardView(FlaskView):
             r = discord.get("/api/users/@me")
         except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
             flash("Nem sikerült kommunikálni a Discord szervereivel", "danger")
+            logout_user()
+            return redirect(url_for("DashboardView:loginfo"))
+        except (InvalidGrantError, TokenExpiredError):
+            # flash("Kérlek jelentkezz be újra!", "warning")  # Mert a flask dance egy büdös buzi, és szarul van implementálva benne a refresh token magic
             logout_user()
             return redirect(url_for("DashboardView:loginfo"))
 
