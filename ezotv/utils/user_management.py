@@ -4,7 +4,6 @@ from flask_dance.contrib.discord import make_discord_blueprint
 
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
-from sqlalchemy.orm.exc import NoResultFound
 
 from flask_login import LoginManager, current_user, login_user
 from model import db, User, OAuth
@@ -54,32 +53,29 @@ def discord_logged_in(blueprint, token):
     user_id = info["id"]
 
     # Find this OAuth token in the database, or create it
-    query = OAuth.query.filter_by(provider=blueprint.name, provider_user_id=user_id)
-    try:
-        oauth = query.one()
-        oauth.token = token
-    except NoResultFound:
+    oauth = OAuth.query.filter_by(provider=blueprint.name, provider_user_id=user_id).first()
+
+    if oauth:
+        oauth.token = token  # update the token
+    else:
         oauth = OAuth(provider=blueprint.name, provider_user_id=user_id, token=token)
 
-    if oauth.user:  # <- ez itt gecihülyén van megcsinálva
-        login_user(oauth.user)
+    if not oauth.user:
 
-    else:
-
-        # check if the user with this discord id exists:
+        # check if the user with this discord id exists: (It's possible... and this is a very bad and ugly solution!)
         user = User.query.filter_by(discord_id=info["id"]).first()
 
         if not user:
-            # Create a new local user account for this user
+            # if not, create a new local user account for this user
             user = User(discord_id=info["id"])
+            db.session.add(user)
 
-        # Associate the local user account with the OAuth token
         oauth.user = user
-        # Save and commit our database models
-        db.session.add_all([user, oauth])
-        db.session.commit()
-        # Log in the new local user account
-        login_user(user)
+
+    db.session.add(oauth)  # add anyways
+    db.session.commit()
+
+    login_user(oauth.user)  # must happen after commit
 
     # Disable Flask-Dance's default behavior for saving the OAuth token
     return False  # proceed to dashboard index
