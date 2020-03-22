@@ -30,7 +30,7 @@
                 <a href={{ url_for( 'AdminView:index') }} class="btn btn-outline-success mx-1">Adminisztráció</a>
             {% endif %}
             
-            <form class="form-inline my-0 mx-1" method="POST" action={{ url_for( 'DashboardView:logout') }}>
+            <form class="form-inline my-0 mx-1" method="POST" action="{{ url_for( 'DashboardView:logout') }}">
                 <button class="btn btn-outline-danger" type="submit">Kijelentkezés</button>
             </form>
         {% endif %}
