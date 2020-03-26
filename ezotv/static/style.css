@@ -5,14 +5,10 @@ body {
   height: 100%;
 }
 
-#page-content {
+main {
+  padding-top: 70px;
   flex: 1 0 auto;
 }
-
-#sticky-footer {
-  flex-shrink: none;
-}
-
 
 #discord-login-button {
   background-color: #7289DA !important;

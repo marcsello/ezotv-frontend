@@ -37,38 +37,37 @@
 
     </header>
 
-    <div id="page-content">
-        <main class="my-5">
-            <div class="container">
-            
-                <div class="row">
-                    <div class="col-12">
-                        <h1>{{ self.page_title() }}</h1>
-                    </div>
+
+    <main class="my-5">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <h1>{{ self.page_title() }}</h1>
                 </div>
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
-            </div>
-            <div class="container">
-                {% block content %}{% endblock %}
             </div>
 
-      </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+        </div>
+
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </main>
-    </div>
+
 
     <footer class="py-2 bg-dark text-white-50">
         <div class="container text-center">
