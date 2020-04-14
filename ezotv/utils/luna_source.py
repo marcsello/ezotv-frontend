@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-import requests
 from requests_toolbelt.sessions import BaseUrlSession
 import json
 from flask import current_app
-from urllib.parse import urljoin
 from .redis_client import redis_client
-import hashlib
 
 
 # TODO: Schema checking
-
 
 class LunaSource:
 
