@@ -1,62 +1,64 @@
 #!/usr/bin/env python3
 import requests
+from requests_toolbelt.sessions import BaseUrlSession
+import json
+from flask import current_app
 from urllib.parse import urljoin
+from .redis_client import redis_client
+import hashlib
+
 
 # TODO: Schema checking
-# TODO: caching
 
 
 class LunaSource:
 
-    def __init__(self, api_key: str):
-        self._session = requests.Session()
-        self._url_base = "https://luna.sch.bme.hu/ezoapi/{}/".format(api_key)
+    def __init__(self, api_key: str, cache_timeout: int = 20):
+        self._session = BaseUrlSession("https://luna.sch.bme.hu/ezoapi/")
+        self._session.headers.update({
+            "Authorization": api_key
+        })
+        self._cache_timeout = cache_timeout
 
-    def _from_request(self, path):
-        r = self._session.get(urljoin(self._url_base, path))
-        r.raise_for_status()
+    def _get_cached(self, path: str):
+        cached_data = redis_client.get(path)
 
-        return r.json()
+        if cached_data:
+            current_app.logger.debug(f"Cache hit: {path}")
+            data = cached_data
+
+        else:
+            current_app.logger.debug(f"Cache miss: {path}")
+            r = self._session.get(path)
+            r.raise_for_status()
+            r.json()  # Test if de-serializable
+
+            redis_client.set(path, r.content)
+            redis_client.expire(path, self._cache_timeout)
+            data = r.content
+
+        return json.loads(data.decode('utf-8'))
 
     @property
     def latest_backup(self):
-        return self._from_request("latest_backup")
+        return self._get_cached("latest_backup")
 
     @property
     def backup_list(self):
-        return self._from_request("backup_list")
+        return self._get_cached("backup_list")
 
     @property
     def server_status(self):
-        return self._from_request("server_status")
+        return self._get_cached("server_status")
 
     @property
     def players_data(self):
-        return self._from_request("players_data")
+        return self._get_cached("players_data")
 
     @property
     def is_online(self):  # This refers to Celestia actually
-        return self._from_request("is_online")
+        return self._get_cached("is_online")
 
     @property
-    def map_status(self):  # Bruh...
-        r = self._session.get("https://luna.sch.bme.hu/ezotv/map/status.json")  # This is public...
-        r.raise_for_status()
-
-        return r.json()
-
-
-if __name__ == "__main__":
-    import os
-    import time
-
-    start = time.time()
-    l = LunaSource(os.environ['LUNA_API_KEY'])
-    print(l.latest_backup)
-    print(l.backup_list)
-    print(l.server_status)
-    print(l.players_data)
-    print(l.is_online)
-    print(l.map_status)
-
-    print("total:", time.time() - start)
+    def map_status(self):
+        return self._get_cached("map_status")

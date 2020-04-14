@@ -6,7 +6,7 @@ import os
 
 # import stuff
 from model import db
-from utils import register_all_error_handlers, login_manager, discord_blueprint
+from utils import register_all_error_handlers, login_manager, discord_blueprint, redis_client
 from discordbot_tools import discord_bot
 
 # import views
@@ -38,6 +38,8 @@ app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIE
 app.config['DISCORD_BOT_TOKEN'] = os.environ['EZOTV_DISCORD_BOT_TOKEN']
 app.config['DISCORD_GUILD_ID'] = os.environ['EZOTV_DISCORD_GUILD_ID']
 app.config['DISCORD_ADMIN_ROLE'] = os.environ['EZOTV_DISCORD_ADMIN_ROLE']
+app.config['REDIS_URL'] = os.environ['EZOTV_REDIS_URL']
+app.config['CACHE_TIMEOUT'] = os.environ['EZOTV_CACHE_TIMEOUT']
 
 # wtf
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -46,6 +48,8 @@ app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 # initialize stuff
 db.init_app(app)
+redis_client.init_app(app)
+
 
 with app.app_context():
 	db.create_all()
