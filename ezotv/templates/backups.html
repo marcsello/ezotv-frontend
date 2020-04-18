@@ -8,27 +8,19 @@
     <div class="col-md-6 col-sm-12 my-2">
         <div id="accordion">
 
-            {% for world, backups in data.items() %}
-
             <div class="card">
 
-                <a class="card-header" data-toggle="collapse" href="#collapse{{world}}">
-                    <span class="card-link text-dark">{{world}}</span>
-                </a>
-
-                <div id="collapse{{world}}" class="collapse" data-parent="#accordion">
-                    <div class="card-body">
-
-                        <div class="list-group">
-                            {% for backup in backups %}
-                            <a class="list-group-item list-group-item-action" href="{{ backup.link }}">{{ backup.name }}</a> {% endfor %}
-                        </div>
-
-                    </div>
+                <div class="card-header bg-dark text-white">
+                    Letöltés
                 </div>
-            </div>
 
-            {% endfor %}
+                <div class="list-group list-group-flush">
+                    {% for backup in data %}
+                    <a class="list-group-item list-group-item-action" href="{{ backup.link }}">{{ backup.name }}</a>
+                    {% endfor %}
+                </div>
+
+            </div>
 
         </div>
     </div>
@@ -40,7 +32,8 @@
             </div>
             <div class="card-body">
                 <p class="card-text">Biztonsági mentéseink szabadon elérhetőek. Érdemes letölteni archiválási célokból, hogy ha véletlen eltűnnénk nyom nélkül a műveitekről akkor is maradjon egy másolat.</p>
-                <p class="card-text">Ezen az oldalon letölthetőek worldönként egyesével. A struktúra és formátum az <a href="https://github.com/Shevchik/AutoSaveWorld/tree/devel">AutoSaveWorld</a> sajátja. Ezen nem tervezünk változtatni.</p>
+                <p class="card-text">Ezen az oldalon letölthetőek egyesével a biztonsági mentések a worldökről. Ez mindhárom worldöt (world, nether, the_end) tartalmazza.</p>
+                <p class="card-text">A fájlnév formátum a következő: <code>backup_ÉV_HÓ_NAP_ÓRA_PERC_MÁSODPERC.tar.gz</code> </p>
             </div>
         </div>
     </div>

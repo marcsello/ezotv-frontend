@@ -15,7 +15,7 @@ class BackupsView(FlaskView):
 
         l = LunaSource(current_app.config['LUNA_API_KEY'], 240)
 
-        backup_list = {}  # Oké... ez így nagyon szar lesz
+        backup_list = []  # Oké... ez így nagyon szar lesz
         try:
             backup_list = l.backup_list
 
@@ -25,17 +25,14 @@ class BackupsView(FlaskView):
         except requests.exceptions.HTTPError:
             flash("Luna hibával tért vissza", "danger")
 
-        data = {}
-        for key, value in backup_list.items():
+        backup_list.sort(reverse=True)
 
-            value.sort(reverse=True)
-
-            data[key] = []
-            for filename in value:
-                backup_data = {
-                    "link": urljoin("https://luna.marcsello.com/ezotv/backups/", filename),
-                    "name": os.path.basename(filename)
-                }
-                data[key].append(backup_data)
+        data = []
+        for filename in backup_list:
+            backup_data = {
+                "link": urljoin("https://luna.marcsello.com/ezotv/backups/", filename),
+                "name": os.path.basename(filename)
+            }
+            data.append(backup_data)
 
         return render_template('backups.html', data=data)
