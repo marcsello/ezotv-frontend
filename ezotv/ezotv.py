@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 from flask import Flask
-from datetime import timedelta
 from werkzeug.middleware.proxy_fix import ProxyFix
 import os
+
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 # import stuff
 from model import db
@@ -20,6 +22,14 @@ from api_views import UserView
      #   #   #   # #    # #  #   #  #  #  #     ##    #     #     #   #  #  #  #     #     #   # #  #  # #     ##
  #####   #   #   # #### #  # #####   #    ##### #  #  #     ##### #####  #######     #     ##### ####### ##### #  #   #
 
+# Setup sentry
+SENTRY_DSN = os.environ.get("EZOTV_SENTRY_DSN")
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[FlaskIntegration()],
+        send_default_pii=True
+    )
 
 # create flask app
 app = Flask(__name__)
