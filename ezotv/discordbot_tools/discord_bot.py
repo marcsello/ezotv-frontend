@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-from urllib.parse import urljoin
-from requests_toolbelt.sessions import BaseUrlSession
+from cache_tools import CachedBaseHttpSession
 
 
 class DiscordBot(object):
 
     def __init__(self, bot_token: str, guild_id: str, admin_role_name: str, admin_chat_id: str):
-        self._session = BaseUrlSession(f"https://discordapp.com/api/")
+        self._session = CachedBaseHttpSession("DISCORD", "https://discordapp.com/api/")
         self._session.headers.update({"Authorization": "Bot {}".format(bot_token)})
 
         self._roles_ilut = {}  # inverse lookup table

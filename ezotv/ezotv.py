@@ -8,7 +8,9 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 # import stuff
 from model import db
-from utils import register_all_error_handlers, login_manager, discord_blueprint, redis_client
+from utils import register_all_error_handlers, login_manager, discord_blueprint
+
+from cache_tools import redis_client
 from discordbot_tools import discord_bot
 
 # import views

@@ -13,7 +13,7 @@ class BackupsView(FlaskView):
 
     def index(self):
 
-        l = LunaSource(current_app.config['LUNA_API_KEY'], 240)
+        l = LunaSource(current_app.config['LUNA_API_KEY'])
 
         backup_list = []  # Oké... ez így nagyon szar lesz
         try:
