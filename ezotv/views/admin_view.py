@@ -50,7 +50,9 @@ class AdminView(FlaskView):
                     "discord_guild_joined": "N/A"
                 })
 
-        return render_template("admin.html", name_changes=name_changes, extra_info=extra_info)
+        users = User.query.all()
+
+        return render_template("admin.html", name_changes=name_changes, extra_info=extra_info, users=users)
 
     def post(self):  # TODO: Marshmallow? ?? ?
 
