@@ -13,6 +13,9 @@ from utils import RSA512SALTED_hash
 from model import db, NameStatus, NameChange
 from schemas import MinecraftFormSchema
 
+from marshmallow import ValidationError
+from discordbot_tools import discord_bot
+
 
 class DashboardView(FlaskView):
 
@@ -96,4 +99,8 @@ class DashboardView(FlaskView):
             return redirect(url_for("DashboardView:index"))
 
         flash("Adatok elmentve!", "info")
+
+        if current_user.name_status == NameStatus.CHANGED:
+            discord_bot.instance.post_log(f"New administraion event!\nName {current_user.minecraft_name} is waiting for approval.")
+
         return redirect(url_for("DashboardView:index"))
