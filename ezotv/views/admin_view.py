@@ -4,7 +4,9 @@ from flask_classful import FlaskView, route
 
 from flask_login import login_required, current_user, logout_user
 
-from urllib.parse import urljoin, quote
+from flask_dance.contrib.discord import discord
+from oauthlib.oauth2.rfc6749.errors import InvalidGrantError, TokenExpiredError
+import requests.exceptions
 
 from model import db, User, NameChange, NameStatus
 from discordbot_tools import discord_bot
@@ -52,6 +54,23 @@ class AdminView(FlaskView):
 
     def post(self):  # TODO: Marshmallow? ?? ?
 
+        # Figure out who did this...
+
+        try:
+            r = discord.get("/api/users/@me")
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+            flash("Nem sikerült kommunikálni a Discord szervereivel!", "danger")
+            logout_user()
+            return redirect(url_for("DashboardView:loginfo"))
+        except (InvalidGrantError, TokenExpiredError):
+            logout_user()
+            return redirect(url_for("DashboardView:loginfo"))
+
+        committer_user_info = r.json()
+        committer_user_discord_tag = f"{committer_user_info['username']}#{committer_user_info['discriminator']}"
+
+        # Perform accepting...
+
         approved = 'verdict_accept' in request.form
         try:
             namechange_id = int(request.form['id'])
@@ -80,9 +99,15 @@ class AdminView(FlaskView):
 
         db.session.commit()  # Itt nem sérthetünk meg constraint
 
+        # Administrate the administration
+
         if approved:
-            flash("{} név elfogadva!".format(user.minecraft_name), "success")
+            flash(f"{user.minecraft_name} név elfogadva!", "success")
+            discord_bot.instance.post_log(f"New administraion event!\nName {user.minecraft_name} is accepted by {committer_user_discord_tag}")
         else:
-            flash("{} név elutasítva!".format(user.minecraft_name), "warning")
+            flash(f"{user.minecraft_name} név elutasítva!", "warning")
+            discord_bot.instance.post_log(f"New administraion event!\nName {user.minecraft_name} is rejected by {committer_user_discord_tag}")
+
+        # Done...
 
         return redirect(url_for("AdminView:index"))
