@@ -6,6 +6,7 @@
 <div class="row">
 
     <div class="col-12 my-2">
+        <h2>Elfogadásra váró nevek</h2>
         
         {% if name_changes %}
         
@@ -60,9 +61,11 @@
                                         </form>
                                     </div>
                                 </div>
-    
+
+                            </div>
                         </div>
                     </div>
+
                 </div>
     
                 {% endfor %}
@@ -72,6 +75,34 @@
         {% else %} {# empty list #}
             <p class="text-center">Minden el van intézve! Ideje sörözni!</p>
         {% endif %}
+    </div>
+</div>
+{# registered users #}
+<div class="row">
+
+    <div class="col-12 my-2">
+        <h2>Regisztrációk</h2>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Minecraft név</th>
+              <th scope="col">Regisztrált</th>
+              <th scope="col">Név állapot</th>
+              <th scope="col">Szinkronizálva</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for user in users %}
+            <tr>
+              <td>{{ user.minecraft_name }}</td>
+              <td>{{ user.registered }}</td>
+              <td>{{ user.name_status }}</td>
+              <td>{{ user.in_sync }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

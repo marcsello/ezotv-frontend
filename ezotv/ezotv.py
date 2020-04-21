@@ -8,7 +8,9 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 # import stuff
 from model import db
-from utils import register_all_error_handlers, login_manager, discord_blueprint, redis_client
+from utils import register_all_error_handlers, login_manager, discord_blueprint
+
+from cache_tools import redis_client
 from discordbot_tools import discord_bot
 
 # import views
@@ -48,6 +50,7 @@ app.config['DISCORD_OAUTH_CLIENT_SECRET'] = os.environ['EZOTV_DISCORD_OAUTH_CLIE
 app.config['DISCORD_BOT_TOKEN'] = os.environ['EZOTV_DISCORD_BOT_TOKEN']
 app.config['DISCORD_GUILD_ID'] = os.environ['EZOTV_DISCORD_GUILD_ID']
 app.config['DISCORD_ADMIN_ROLE'] = os.environ['EZOTV_DISCORD_ADMIN_ROLE']
+app.config['DISCORD_ADMIN_CHAT'] = os.environ['EZOTV_DISCORD_ADMIN_CHAT']
 app.config['REDIS_URL'] = os.environ['EZOTV_REDIS_URL']
 app.config['CACHE_TIMEOUT'] = os.environ['EZOTV_CACHE_TIMEOUT']
 

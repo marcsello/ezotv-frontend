@@ -5,8 +5,6 @@ from flask_classful import FlaskView, route
 from flask_login import login_required, current_user, logout_user
 import sqlalchemy.exc
 
-from urllib.parse import urljoin, quote
-
 from flask_dance.contrib.discord import discord
 from oauthlib.oauth2.rfc6749.errors import InvalidGrantError, TokenExpiredError
 import requests.exceptions

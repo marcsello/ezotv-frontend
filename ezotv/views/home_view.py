@@ -2,6 +2,7 @@
 from flask import request, abort, render_template, current_app
 from flask_classful import FlaskView
 from utils import LunaSource
+from json.decoder import JSONDecodeError
 
 import requests.exceptions
 
@@ -12,7 +13,7 @@ class HomeView(FlaskView):
 
     def index(self):
 
-        l = LunaSource(current_app.config['LUNA_API_KEY'], int(current_app.config['CACHE_TIMEOUT']))
+        l = LunaSource(current_app.config['LUNA_API_KEY'])
 
         try:
             data = {
@@ -21,7 +22,7 @@ class HomeView(FlaskView):
                 "server": l.server_status,
                 "players": l.players_data
             }
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError):
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, JSONDecodeError):
             return render_template('bigfail.html')
 
         return render_template('home.html', data=data)
