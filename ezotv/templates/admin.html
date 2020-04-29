@@ -4,7 +4,11 @@
 
 
 {% macro translate_discord_id(id) -%}
-    {{ members_lut[id].user.username }}#{{ members_lut[id].user.discriminator }}
+    {%- if id in members_lut %}
+        {{ members_lut[id].user.username }}#{{ members_lut[id].user.discriminator }}
+    {%- else -%}
+        <span class="text-muted">¯\_(ツ)_/¯</span>
+    {%- endif -%}
 {%- endmacro %}
 
 
