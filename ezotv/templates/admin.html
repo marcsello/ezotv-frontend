@@ -2,6 +2,12 @@
 
 {% block page_title %}Adminisztráció{% endblock %}
 
+
+{% macro translate_discord_id(id) -%}
+    {{ members_lut[id].user.username }}#{{ members_lut[id].user.discriminator }}
+{%- endmacro %}
+
+
 {% block content %}
 <div class="row">
 
@@ -43,7 +49,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <table class="table">
                                             <tbody>
-                                                <tr><td>Discord tag:</td> <td>{{ extra_info[name_change.id].discord_tag }}</td></tr>
+                                                <tr><td>Discord tag:</td> <td>{{ translate_discord_id(name_change.user.discord_id) }}</td></tr>
                                                 <tr><td>Discord csoport tagság:</td> <td>{{ name_change.user.is_member }}</td></tr>
                                                 <tr><td>Discord csoport tagság kezdete:</td> <td>{{ extra_info[name_change.id].discord_guild_joined }}</td></tr>
                                                 <tr><td>Összes név változtatás:</td> <td>{{ extra_info[name_change.id].total_changes }}</td></tr>
@@ -86,6 +92,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th scope="col">Discord tag</th>
               <th scope="col">Minecraft név</th>
               <th scope="col">Regisztrált</th>
               <th scope="col">Név állapot</th>
@@ -95,10 +102,11 @@
           <tbody>
           {% for user in users %}
             <tr>
-              <td>{{ user.minecraft_name }}</td>
+              <td>{{ translate_discord_id(user.discord_id) }}</td>
+              <td>{{ user.minecraft_name or ''}}</td>
               <td>{{ user.registered }}</td>
-              <td>{{ user.name_status }}</td>
-              <td>{{ user.in_sync }}</td>
+              <td>{{ user.name_status.name }}</td>
+              <td class="text-{{ "success" if user.in_sync else "warning" }}">{{ user.in_sync }}</td>
             </tr>
           {% endfor %}
           </tbody>

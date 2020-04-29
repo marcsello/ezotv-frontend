@@ -16,14 +16,13 @@ from datetime import datetime
 
 
 class AdminView(FlaskView):
-
     route_prefix = "/dashboard/"
 
     decorators = [login_required, admin_required]
 
     def index(self):
 
-        members_lut = discord_bot.instance.get_members_lut()
+        members_lut = discord_bot.instance.get_members_lut()  # This is a lookup table, to resolve discord ids to names
 
         name_changes = NameChange.query.filter_by(active=True).all()
         extra_info = {}
@@ -39,8 +38,8 @@ class AdminView(FlaskView):
             if discord_id in members_lut.keys():
 
                 extra_info[name_change.id].update({
-                    "discord_tag": "{}#{}".format(members_lut[discord_id]['user']['username'], members_lut[discord_id]['user']['discriminator']),
-                    "discord_guild_joined": datetime.strptime(members_lut[discord_id]['joined_at'], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S")  # Ebbe bele kellene verni a gecit
+                    "discord_guild_joined": datetime.strptime(  # Ebbe bele kellene verni a gecit
+                        members_lut[discord_id]['joined_at'], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S")
                 })
 
             else:
@@ -52,7 +51,13 @@ class AdminView(FlaskView):
 
         users = User.query.all()
 
-        return render_template("admin.html", name_changes=name_changes, extra_info=extra_info, users=users)
+        return render_template(
+            "admin.html",
+            name_changes=name_changes,
+            extra_info=extra_info,
+            users=users,
+            members_lut=members_lut
+        )
 
     def post(self):  # TODO: Marshmallow? ?? ?
 
@@ -77,7 +82,8 @@ class AdminView(FlaskView):
         try:
             namechange_id = int(request.form['id'])
         except ValueError:
-            flash("Hiba a bevitt adatokban!", "danger")  # ezt valaki tuti humorosnak véli majd, tekintve, hogy a bevitt adatok az két gomb
+            # ezt valaki tuti humorosnak véli majd, tekintve, hogy a bevitt adatok az két gomb
+            flash("Hiba a bevitt adatokban!", "danger")
             return redirect(url_for("AdminView:index"))
 
         namechange = NameChange.query.get(namechange_id)
@@ -105,10 +111,14 @@ class AdminView(FlaskView):
 
         if approved:
             flash(f"{user.minecraft_name} név elfogadva!", "success")
-            discord_bot.instance.post_log(f"New administraion event!\nName {user.minecraft_name} is accepted by {committer_user_discord_tag}")
+            discord_bot.instance.post_log(
+                f"New administraion event!\nName {user.minecraft_name} is accepted by {committer_user_discord_tag}"
+            )
         else:
             flash(f"{user.minecraft_name} név elutasítva!", "warning")
-            discord_bot.instance.post_log(f"New administraion event!\nName {user.minecraft_name} is rejected by {committer_user_discord_tag}")
+            discord_bot.instance.post_log(
+                f"New administraion event!\nName {user.minecraft_name} is rejected by {committer_user_discord_tag}"
+            )
 
         # Done...
 
