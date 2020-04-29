@@ -22,7 +22,7 @@ class CachedResponse(Response):
 
 class CachedBaseHttpSession(BaseUrlSession):
     """
-    The reason for the existance of this class is that requests-class does not support:
+    The reason for the existance of this class is that requests-cache does not support:
     - The flask redis client
     - using BaseUrlSession
     And I really don't want to monkey-patch it
