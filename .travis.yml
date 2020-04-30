@@ -21,13 +21,12 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker push $DOCKER_USERNAME/ezotv:latest
         - sleep 15 # Make sure it is possible to pull it
-
-# Deploy
-deploy:
-  provider: script
-  script: curl "$WEBHOOKURL"
-  on:
-    push: true
-    branch: master
-    repo: marcsello/ezotv
-    python: 3.8
+    - stage: deploy
+      script: skip
+      deploy:
+        provider: script
+        script: curl --silent "$WEBHOOKURL"
+        on:
+          push: true
+          branch: master
+          python: 3.8
