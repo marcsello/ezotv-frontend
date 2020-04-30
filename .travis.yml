@@ -1,0 +1,33 @@
+# Test, and deploy website
+language: python
+
+services:
+  - docker
+
+python:
+  - 3.8
+
+install:
+  - pip3 install -r requirements.txt
+  - pip3 install -r requirementy-dev.txt
+
+jobs:
+  include:
+    - stage: test
+      script: pytest
+    - stage: push docker image
+      script:
+        - docker build -t $DOCKER_USERNAME/ezotv:latest .
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push $DOCKER_USERNAME/ezotv:latest
+        - sleep 15 # Make sure it is possible to pull it
+
+# Deploy
+deploy:
+  provider: script
+  script: curl "$WEBHOOKURL"
+  on:
+    push: true
+    branch: master
+    repo: marcsello/ezotv
+    python: 3.8
