@@ -62,11 +62,6 @@ app.config['PREFERRED_URL_SCHEME'] = 'https'
 # initialize stuff
 db.init_app(app)
 redis_client.init_app(app)
-
-
-with app.app_context():
-	db.create_all()
-
 discord_bot.init_app(app)
 
 # register error handlers
@@ -74,19 +69,23 @@ register_all_error_handlers(app)
 
 # register views
 for view in [DashboardView, HomeView, BackupsView, AdminView]:
-	view.register(app, trailing_slash=False)
+    view.register(app, trailing_slash=False)
 
 # register views
 for view in [UserView]:
-	view.register(app, trailing_slash=False, route_prefix="/api/")
+    view.register(app, trailing_slash=False, route_prefix="/api/")
 
 
 app.register_blueprint(discord_blueprint, url_prefix="/dashboard/login")
 
-
 login_manager.init_app(app)
 
 
-# start debuggig if needed
+@app.before_first_request
+def initial_setup():
+    db.create_all()
+
+
+# start debugging if needed
 if __name__ == "__main__":
-	app.run(debug=True)
+    app.run(debug=True)
