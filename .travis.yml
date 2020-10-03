@@ -1,30 +1,28 @@
-# Test, and deploy website
+# Test, and deploy website     
 language: python
-
+dist: bionic
 python:
-  - 3.8
+  - "3.8"
 
-jobs:
-  include:
-    - stage: test
-      install:
-        - pip3 install -r requirements.txt
-        - pip3 install -r requirements-dev.txt
-      script: pytest
-    - stage: push docker image
-      services:
-        - docker
-      script:
-        - docker build -t $DOCKER_USERNAME/ezotv:latest .
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker push $DOCKER_USERNAME/ezotv:latest
-        - sleep 15 # Make sure it is possible to pull it
-    - stage: deploy
-      script: skip
-      deploy:
-        provider: script
-        script: curl --silent "$WEBHOOKURL"
-        on:
-          push: true
-          branch: master
-          python: 3.8
+services:
+  - docker
+
+script:
+  - pip3 install -r requirements.txt
+  - pip3 install -r requirements-dev.txt
+  - pytest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t $DOCKER_USERNAME/ezosync:latest .
+  - docker push $DOCKER_USERNAME/ezosync:latest
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: 
+    - sleep 15 # wait for dockerhub
+    - curl --silent "$WEBHOOKURL"
+  on:
+    push: true
+    branch: master
