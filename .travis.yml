@@ -14,8 +14,9 @@ script:
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t $DOCKER_USERNAME/ezosync:latest .
-  - docker push $DOCKER_USERNAME/ezosync:latest
+  - docker build -t $DOCKER_USERNAME/ezotv:$TRAVIS_BUILD_NUMBER .
+  - docker tag $DOCKER_USERNAME/ezotv:$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/ezotv:latest
+  - docker push $DOCKER_USERNAME/ezotv # push all tags
 
 deploy:
   skip_cleanup: true
