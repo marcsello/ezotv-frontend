@@ -20,9 +20,7 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: 
-    - sleep 15 # wait for dockerhub
-    - curl --silent "$WEBHOOKURL"
+  script: sleep 15; curl --silent "$WEBHOOKURL" # This needs to be a single command apparently
   on:
     push: true
     branch: master
