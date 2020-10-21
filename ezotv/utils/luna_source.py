@@ -6,8 +6,8 @@ from cache_tools import CachedBaseHttpSession
 
 class LunaSource:
 
-    def __init__(self, api_key: str):
-        self._session = CachedBaseHttpSession("LUNA", "https://luna.sch.bme.hu/ezoapi/")
+    def __init__(self, api_url: str, api_key: str):
+        self._session = CachedBaseHttpSession("LUNA", api_url)
         self._session.headers.update({
             "Authorization": api_key
         })
@@ -19,24 +19,20 @@ class LunaSource:
 
     @property
     def latest_backup(self):
-        return self._get_json("latest_backup")
+        return self._get_json("backups/$latest")
 
     @property
     def backup_list(self):
-        return self._get_json("backup_list")
+        return self._get_json("backups")
 
     @property
     def server_status(self):
-        return self._get_json("server_status")
+        return self._get_json("status")
 
     @property
     def players_data(self):
-        return self._get_json("players_data")
-
-    @property
-    def is_online(self):  # This refers to Celestia actually
-        return self._get_json("is_online")
+        return self._get_json("playerdata")
 
     @property
     def map_status(self):
-        return self._get_json("map_status")
+        return self._get_json("maprender")

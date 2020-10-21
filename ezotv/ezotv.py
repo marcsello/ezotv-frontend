@@ -41,6 +41,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('EZOTV_DATABASE_URI', "sqlite://")  # Default to memory db
 app.config['LOCAL_API_KEY'] = os.environ['EZOTV_LOCAL_API_KEY']
 app.config['LUNA_API_KEY'] = os.environ['EZOTV_LUNA_API_KEY']
+app.config['LUNA_API_URL'] = os.environ['EZOTV_LUNA_API_URL']
 app.config['SERVER_NAME'] = os.environ['EZOTV_SERVER_NAME']  # ezotv.marcsello.com
 
 # important stuff
