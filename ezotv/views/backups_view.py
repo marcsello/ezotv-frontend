@@ -13,7 +13,7 @@ class BackupsView(FlaskView):
 
     def index(self):
 
-        l = LunaSource(current_app.config['LUNA_API_KEY'])
+        l = LunaSource(current_app.config['LUNA_API_URL'], current_app.config['LUNA_API_KEY'])
 
         backup_list = []  # Oké... ez így nagyon szar lesz
         try:
@@ -23,7 +23,7 @@ class BackupsView(FlaskView):
             flash("Nem sikerült kapcsolatba lépni Lunával", "danger")
 
         except requests.exceptions.HTTPError:
-            flash("Luna hibával tért vissza", "danger")
+            flash("Luna nem érzi jól magát", "danger")
 
         backup_list.sort(reverse=True)
 

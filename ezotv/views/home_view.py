@@ -13,7 +13,7 @@ class HomeView(FlaskView):
 
     def index(self):
 
-        l = LunaSource(current_app.config['LUNA_API_KEY'])
+        l = LunaSource(current_app.config['LUNA_API_URL'], current_app.config['LUNA_API_KEY'])
 
         try:
             data = {
