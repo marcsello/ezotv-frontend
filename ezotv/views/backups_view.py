@@ -3,6 +3,7 @@ from flask import request, abort, render_template, current_app, flash
 from flask_classful import FlaskView
 from utils import LunaSource
 from urllib.parse import urljoin
+from json import JSONDecodeError
 
 import os.path
 
@@ -19,11 +20,13 @@ class BackupsView(FlaskView):
         try:
             backup_list = l.backup_list
 
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
+            current_app.logger.error(f"Luna connection error: {e}")
             flash("Nem sikerült kapcsolatba lépni Lunával", "danger")
 
-        except requests.exceptions.HTTPError:
-            flash("Luna nem érzi jól magát", "danger")
+        except (requests.exceptions.HTTPError, JSONDecodeError) as e:
+            current_app.logger.error(f"Luna communication error: {e}")
+            flash("Luna nem érzi jól magát...", "danger")
 
         backup_list.sort(reverse=True)
 

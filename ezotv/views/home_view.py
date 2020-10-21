@@ -22,7 +22,8 @@ class HomeView(FlaskView):
                 "server": l.server_status,
                 "players": l.players_data
             }
-        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, JSONDecodeError):
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, JSONDecodeError) as e:
+            current_app.logger.error(f"Luna communication error: {e}")
             return render_template('bigfail.html')
 
         return render_template('home.html', data=data)
